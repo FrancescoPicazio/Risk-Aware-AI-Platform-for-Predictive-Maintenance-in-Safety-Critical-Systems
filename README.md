@@ -118,31 +118,6 @@ For complete KPI details, see:
 
 ---
 
-## 🗺️ Development Roadmap
-
-### Phase 1 – Architecture ✅
-System design, component breakdown, ADR definition
-
-### Phase 2 – Core Modeling 🚧
-LSTM baseline, cross-validation, NASA score optimization
-
-### Phase 3 – Uncertainty & Probabilistic Layer 📅
-MC Dropout, calibration, failure probability estimation
-
-### Phase 4 – Risk & Cost Engine 📅
-Economic optimization and intervention threshold
-
-### Phase 5 – MLOps Layer 📅
-Model versioning, drift detection, FastAPI deployment
-
-### Phase 6 – Monitoring & Dashboard 📅
-Real-time dashboard with RUL, risk score, and cost impact
-
-For the complete roadmap, see:
-- 🗓️ **[ROADMAP.md](docs/ROADMAP.md)** – 6–7 month development plan
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -190,7 +165,6 @@ Risk-Aware-AI-Platform/
 │   ├── ARCHITECTURE.md           # System architecture design
 │   ├── ADR.md                    # Architecture Decision Records
 │   ├── REQUIREMENTS_AND_KPI.md   # Key Performance Indicators and requirements
-│   ├── ROADMAP.md                # Development roadmap
 │   └── DATASET.md                # Dataset documentation
 │
 ├── src/                          
@@ -363,30 +337,6 @@ Per i dettagli completi dei KPI, vedi:
 
 ---
 
-## 🗺️ Roadmap di Sviluppo
-
-### Fase 1 – Architettura (3 settimane) ✅
-Design del sistema, scomposizione componenti, definizione ADR
-
-### Fase 2 – Core Modeling (6–8 settimane) 🚧
-Baseline LSTM, cross-validation, ottimizzazione NASA score
-
-### Fase 3 – Layer Incertezza & Probabilistico (4–6 settimane) 📅
-MC Dropout, calibrazione, stima probabilità di guasto
-
-### Fase 4 – Motore Rischio & Costi (4 settimane) 📅
-Ottimizzazione economica e soglia di intervento
-
-### Fase 5 – Layer MLOps (4 settimane) 📅
-Versioning modelli, drift detection, deployment FastAPI
-
-### Fase 6 – Monitoraggio & Dashboard (3 settimane) 📅
-Dashboard real-time con RUL, risk score e impatto economico
-
-Per la roadmap completa, vedi:
-- 🗓️ **[ROADMAP.md](docs/ROADMAP.md)** – Piano di sviluppo 6–7 mesi
-
----
 
 ## 🚀 Iniziare
 
@@ -434,8 +384,7 @@ Risk-Aware-AI-Platform/
 ├── docs/                          # Documentazione
 │   ├── ARCHITECTURE.md           # Design architettura sistema
 │   ├── ADR.md                    # Architecture Decision Records
-│   ├── KPI.md                    # Indicatori Chiave di Performance
-│   ├── ROADMAP.md                # Roadmap di sviluppo
+│   ├── REQUIREMENTS_AND_KPI.md   # Indicatori Chiave di Performance e requisiti
 │   └── DATASET.md                # Documentazione dataset
 │
 ├── src/                          # Codice sorgente (da sviluppare)
@@ -473,7 +422,6 @@ Questo progetto rappresenta un **approccio production-first** all'AI in sistemi 
 - 📐 **[Architettura](docs/ARCHITECTURE.md)** – Design completo del sistema
 - 📋 **[ADR](docs/ADR.md)** – Record delle decisioni e razionale
 - 📈 **[KPI](docs/REQUIREMENTS_AND_KPI.md)** – Framework metriche di performance
-- 🗓️ **[Roadmap](docs/ROADMAP.md)** – Timeline di sviluppo
 - 📊 **[Dataset](docs/DATASET.md)** – Descrizione dati e preprocessing
 
 ---
