@@ -114,7 +114,7 @@ The platform is evaluated using a comprehensive KPI framework:
 - **Optimal Intervention Coverage** > 85%
 
 For complete KPI details, see:
-- 📈 **[KPI.md](docs/KPI.md)** – Comprehensive metrics framework
+- 📈 **[KPI.md](docs/REQUIREMENTS_AND_KPI.md)** – Comprehensive metrics framework
 
 ---
 
@@ -189,11 +189,11 @@ Risk-Aware-AI-Platform/
 ├── docs/                          # Documentation
 │   ├── ARCHITECTURE.md           # System architecture design
 │   ├── ADR.md                    # Architecture Decision Records
-│   ├── KPI.md                    # Key Performance Indicators
+│   ├── REQUIREMENTS_AND_KPI.md   # Key Performance Indicators and requirements
 │   ├── ROADMAP.md                # Development roadmap
 │   └── DATASET.md                # Dataset documentation
 │
-├── src/                          # Source code (to be developed)
+├── src/                          
 │   ├── data_ingestion/
 │   ├── feature_engineering/
 │   ├── models/
@@ -212,23 +212,11 @@ Risk-Aware-AI-Platform/
 
 ---
 
-## 🔬 Research & Innovation
-
-This project represents a **production-first approach** to AI in safety-critical systems:
-
-- **Not a Kaggle solution**: designed for real-world deployment
-- **Risk-aware over accuracy-only**: focuses on business impact
-- **Probabilistic by design**: embraces uncertainty quantification
-- **Production-oriented**: includes MLOps and monitoring from day one
-
----
-
 ## 📄 Documentation
 
 - 📐 **[Architecture](docs/ARCHITECTURE.md)** – Complete system design
 - 📋 **[ADR](docs/ADR.md)** – Decision records and rationale
-- 📈 **[KPI](docs/KPI.md)** – Performance metrics framework
-- 🗓️ **[Roadmap](docs/ROADMAP.md)** – Development timeline
+- 📈 **[KPI](docs/REQUIREMENTS_AND_KPI.md)** – Performance metrics framework
 - 📊 **[Dataset](docs/DATASET.md)** – Data description and preprocessing
 
 ---
@@ -371,7 +359,7 @@ La piattaforma è valutata utilizzando un framework KPI completo:
 - **Copertura Interventi Ottimali** > 85%
 
 Per i dettagli completi dei KPI, vedi:
-- 📈 **[KPI.md](docs/KPI.md)** – Framework completo delle metriche
+- 📈 **[KPI.md](docs/REQUIREMENTS_AND_KPI.md)** – Framework completo delle metriche
 
 ---
 
@@ -484,7 +472,7 @@ Questo progetto rappresenta un **approccio production-first** all'AI in sistemi 
 
 - 📐 **[Architettura](docs/ARCHITECTURE.md)** – Design completo del sistema
 - 📋 **[ADR](docs/ADR.md)** – Record delle decisioni e razionale
-- 📈 **[KPI](docs/KPI.md)** – Framework metriche di performance
+- 📈 **[KPI](docs/REQUIREMENTS_AND_KPI.md)** – Framework metriche di performance
 - 🗓️ **[Roadmap](docs/ROADMAP.md)** – Timeline di sviluppo
 - 📊 **[Dataset](docs/DATASET.md)** – Descrizione dati e preprocessing
 

@@ -2,7 +2,7 @@
 
 ---
 
-## 🔹 A. Model Performance (ML)
+## A. Model Performance (ML)
 
 ### RMSE on RUL
 - **Realistic target:** RMSE < 15 cycles (FD001 dataset)  
@@ -18,7 +18,7 @@
 
 ---
 
-## 🔹 B. Probabilistic / Risk KPIs
+## B. Probabilistic / Risk KPIs
 
 ### Early Failure Detection Accuracy
 - Percentage of failures predicted at least **N cycles before failure**
@@ -34,7 +34,7 @@
 
 ---
 
-## 🔹 C. Business / Decision KPIs
+## C. Business / Decision KPIs
 
 ### Cost Reduction (%)
 - Estimated savings enabled by optimized maintenance
