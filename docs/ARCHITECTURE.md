@@ -29,64 +29,109 @@ The system is modular, production-oriented, and designed for extensibility acros
 
 ---
 
-# 3. High-Level Architecture Diagram (Conceptual)
+# 3. C4 Architecture (Context, Container, Component)
 
-               ┌────────────────────────────┐
-               │   Digital Degradation      │
-               │        Simulator           │
-               └──────────────┬─────────────┘
-                              │
-                              ▼
-               ┌────────────────────────────┐
-               │     Data Ingestion Layer   │
-               │ (Streaming / Batch Loader) │
-               └──────────────┬─────────────┘
-                              │
-                              ▼
-               ┌────────────────────────────┐
-               │   Feature Engineering      │
-               │   & Health Index Module    │
-               └──────────────┬─────────────┘
-                              │
-                              ▼
-               ┌────────────────────────────┐
-               │     RUL Modeling Engine    │
-               │ (LSTM / TCN / Ensemble)    │
-               └──────────────┬─────────────┘
-                              │
-                              ▼
-               ┌────────────────────────────┐
-               │  Uncertainty Quantification│
-               │ (MC Dropout / Calibration) │
-               └──────────────┬─────────────┘
-                              │
-                              ▼
-               ┌────────────────────────────┐
-               │  Probabilistic Failure     │
-               │      Modeling Layer        │
-               └──────────────┬─────────────┘
-                              │
-                              ▼
-               ┌────────────────────────────┐
-               │  Risk-Aware Decision Engine│
-               └──────────────┬─────────────┘
-                              │
-                              ▼
-               ┌────────────────────────────┐
-               │  Economic Optimization     │
-               │  & Policy Recommendation   │
-               └──────────────┬─────────────┘
-                              │
-                              ▼
-               ┌────────────────────────────┐
-               │        Inference API       │
-               │        (FastAPI)           │
-               └──────────────┬─────────────┘
-                              │
-                              ▼
-               ┌────────────────────────────┐
-               │ Monitoring & Drift Control │
-               └────────────────────────────┘
+Questa sezione include **MVP + Target**. L'MVP e' un sottoinsieme del Target (stessi confini, meno componenti opzionali).
+
+## 3.1 System Context (C4 - Context)
+
+```mermaid
+flowchart LR
+  actor[Maintenance Engineer] -->|Uses dashboard / reports| sys[Risk-Aware Prognostics Platform]
+  ops[Operations / MLOps] -->|Operates pipelines| sys
+  data[CMAPSS .txt files] -->|Streaming simulation| sys
+  ext[Business Stakeholders] -->|Consumes KPI / cost impact| sys
+```
+
+## 3.2 Containers (C4 - Container)
+4
+```mermaid
+flowchart TB
+  subgraph Platform[Risk-Aware Prognostics Platform]
+    sim[Streaming Simulator\n(Python job)]
+    ingest[Data Ingestion\n(stream + batch)]
+    fe[Feature Engineering\n+ Health Index]
+    train[Training Pipeline\n(PyTorch)]
+    uq[Uncertainty + Failure Modeling]
+    risk[Risk & Cost Engine]
+    api[Inference API\n(FastAPI)]
+    mon[Monitoring + Drift + KPI]
+    sched[Scheduler\n(Airflow/Prefect)]
+  end
+
+  raw[(data/raw)] -->|read| sim
+  sim --> ingest
+  ingest --> fe --> train --> uq --> risk
+  risk --> api
+  api --> mon
+  fe --> proc[(data/processed)]
+  train --> artifacts[(data/model_artifacts)]
+  mon --> metrics[(data/metrics)]
+  sched --> sim
+  sched --> ingest
+  sched --> train
+  sched --> mon
+```
+
+## 3.3 Components (C4 - Component)
+
+```mermaid
+flowchart TB
+  subgraph Ingestion[Data Ingestion Layer]
+    simc[Simulator\n(Replay .txt -> stream)]
+    loader[Batch Loader\n(CMAPSS parser)]
+    validate[Data Validation\n(schema + ranges)]
+  end
+
+  subgraph FE[Feature Engineering]
+    norm[Normalization]
+    window[Windowing]
+    health[Health Index]
+  end
+
+  subgraph Model[RUL Modeling Engine]
+    lstm[LSTM baseline\n(PyTorch)]
+    metrics[RMSE + NASA score]
+    cv[Cross-engine validation]
+  end
+
+  subgraph UQ[Uncertainty + Failure Modeling]
+    mcd[MC Dropout / Ensemble]
+    calib[Calibration\n(ECE + reliability)]
+    survival[Failure modeling\n(hazard/survival)]
+  end
+
+  subgraph Risk[Risk & Cost Engine]
+    cost[Cost function\n(C_early, C_late)]
+    policy[Optimal threshold\n(Expected cost)]
+  end
+
+  subgraph API[Inference API]
+    predict[/predict/]
+    riskep[/risk/]
+    healthz[/health/]
+    metricsep[/metrics/]
+  end
+
+  subgraph Mon[Monitoring]
+    drift[Drift detection]
+    perf[Performance drift\n(RMSE/NASA)]
+    kpi[KPI tracking\n(cost impact)]
+  end
+
+  simc --> loader --> validate --> norm --> window --> health --> lstm --> mcd --> calib --> survival --> cost --> policy --> predict
+  predict --> metricsep
+  lstm --> metrics
+  lstm --> cv
+  predict --> drift
+  predict --> perf
+  predict --> kpi
+```
+
+## 3.4 MVP vs Target Scope
+
+- **MVP**: Simulator, Ingestion, Feature Engineering, LSTM baseline, RMSE/NASA, MC Dropout, Risk & Cost Engine, FastAPI, Docker Compose, basic monitoring.
+- **Target**: Ensemble models, advanced failure modeling, full KPI dashboard, automated retraining triggers, richer drift monitoring.
 
 ---
 
