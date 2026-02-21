@@ -44,19 +44,19 @@ flowchart LR
 ```
 
 ## 3.2 Containers (C4 - Container)
-4
+
 ```mermaid
 flowchart TB
   subgraph Platform[Risk-Aware Prognostics Platform]
-    sim[Streaming Simulator\n(Python job)]
-    ingest[Data Ingestion\n(stream + batch)]
-    fe[Feature Engineering\n+ Health Index]
-    train[Training Pipeline\n(PyTorch)]
-    uq[Uncertainty + Failure Modeling]
-    risk[Risk & Cost Engine]
-    api[Inference API\n(FastAPI)]
-    mon[Monitoring + Drift + KPI]
-    sched[Scheduler\n(Airflow/Prefect)]
+    sim["🎬 Streaming Simulator"]
+    ingest["📥 Data Ingestion"]
+    fe["⚙️ Feature Engineering"]
+    train["🧠 Training Pipeline"]
+    uq["📊 Uncertainty + Failure"]
+    risk["⚠️ Risk & Cost Engine"]
+    api["🔌 Inference API"]
+    mon["📈 Monitoring + Drift"]
+    sched["⏱️ Scheduler"]
   end
 
   raw[(data/raw)] -->|read| sim
@@ -77,46 +77,46 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-  subgraph Ingestion[Data Ingestion Layer]
-    simc[Simulator\n(Replay .txt -> stream)]
-    loader[Batch Loader\n(CMAPSS parser)]
-    validate[Data Validation\n(schema + ranges)]
+  subgraph Ingestion["📥 Data Ingestion Layer"]
+    simc["🎬 Streaming Simulator"]
+    loader["📂 Batch Loader"]
+    validate["✓ Data Validation"]
   end
 
-  subgraph FE[Feature Engineering]
-    norm[Normalization]
-    window[Windowing]
-    health[Health Index]
+  subgraph FE["⚙️ Feature Engineering"]
+    norm["Normalization"]
+    window["Windowing"]
+    health["Health Index"]
   end
 
-  subgraph Model[RUL Modeling Engine]
-    lstm[LSTM baseline\n(PyTorch)]
-    metrics[RMSE + NASA score]
-    cv[Cross-engine validation]
+  subgraph Model["🧠 RUL Modeling Engine"]
+    lstm["LSTM PyTorch"]
+    metrics["RMSE + NASA"]
+    cv["Cross-engine CV"]
   end
 
-  subgraph UQ[Uncertainty + Failure Modeling]
-    mcd[MC Dropout / Ensemble]
-    calib[Calibration\n(ECE + reliability)]
-    survival[Failure modeling\n(hazard/survival)]
+  subgraph UQ["📊 Uncertainty & Failure"]
+    mcd["MC Dropout"]
+    calib["Calibration"]
+    survival["Survival Model"]
   end
 
-  subgraph Risk[Risk & Cost Engine]
-    cost[Cost function\n(C_early, C_late)]
-    policy[Optimal threshold\n(Expected cost)]
+  subgraph Risk["⚠️ Risk & Cost Engine"]
+    cost["Cost Function"]
+    policy["Opt Threshold"]
   end
 
-  subgraph API[Inference API]
-    predict[/predict/]
-    riskep[/risk/]
-    healthz[/health/]
-    metricsep[/metrics/]
+  subgraph API["🔌 Inference API"]
+    predict["/predict"]
+    riskep["/risk"]
+    healthz["/health"]
+    metricsep["/metrics"]
   end
 
-  subgraph Mon[Monitoring]
-    drift[Drift detection]
-    perf[Performance drift\n(RMSE/NASA)]
-    kpi[KPI tracking\n(cost impact)]
+  subgraph Mon["📈 Monitoring"]
+    drift["Drift Detection"]
+    perf["Performance Drift"]
+    kpi["KPI Tracking"]
   end
 
   simc --> loader --> validate --> norm --> window --> health --> lstm --> mcd --> calib --> survival --> cost --> policy --> predict
