@@ -4,7 +4,6 @@ Handles loading and preprocessing of NASA C-MAPSS turbofan engine dataset
 """
 
 import pandas as pd
-import numpy as np
 from pathlib import Path
 from typing import Tuple, Dict, List
 

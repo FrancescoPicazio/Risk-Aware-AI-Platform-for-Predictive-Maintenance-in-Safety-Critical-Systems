@@ -5,7 +5,7 @@ Unit tests for CMAPSS Data Loader
 import sys
 sys.path.append('..')
 
-from src.data_ingestion.data_loader import CMAPSSDataLoader
+from src.data_ingestion.data_ingestion_layer import CMAPSSDataLoader
 import pandas as pd
 
 
@@ -26,7 +26,7 @@ def test_load_train_data():
         assert "time" in df.columns, "time column should exist"
 
         n_engines = df["unit"].nunique()
-        print(f"✅ Train data loaded successfully")
+        print("Train data loaded successfully")
         print(f"   - Rows: {len(df):,}")
         print(f"   - Engines: {n_engines}")
         print(f"   - Columns: {len(df.columns)}")
@@ -34,7 +34,7 @@ def test_load_train_data():
 
         return True
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f"Test failed: {e}")
         return False
 
 
@@ -53,14 +53,14 @@ def test_load_test_data():
         assert not rul_true.empty, "RUL DataFrame should not be empty"
         assert len(rul_true) == df_test["unit"].nunique(), "RUL count should match engine count"
 
-        print(f"✅ Test data loaded successfully")
+        print("Test data loaded successfully")
         print(f"   - Test rows: {len(df_test):,}")
         print(f"   - Test engines: {df_test['unit'].nunique()}")
         print(f"   - RUL ground truth entries: {len(rul_true)}")
 
         return True
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f"Test failed: {e}")
         return False
 
 
@@ -77,7 +77,7 @@ def test_load_all_subsets():
 
         expected_subsets = ["FD001", "FD002", "FD003", "FD004"]
 
-        print(f"✅ All subsets loaded successfully")
+        print("All subsets loaded successfully")
         for subset in expected_subsets:
             if subset in all_data:
                 df = all_data[subset]
@@ -85,7 +85,7 @@ def test_load_all_subsets():
 
         return True
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f"Test failed: {e}")
         return False
 
 
@@ -111,14 +111,14 @@ def test_rul_calculation():
         rul_diff = engine_1['RUL'].diff().dropna()
         assert all(rul_diff == -1), "RUL should decrease by 1 each cycle"
 
-        print(f"✅ RUL calculation is correct")
+        print("RUL calculation is correct")
         print(f"   - Engine 1 lifecycle: {len(engine_1)} cycles")
         print(f"   - Initial RUL: {engine_1['RUL'].iloc[0]}")
         print(f"   - Final RUL: {engine_1['RUL'].iloc[-1]}")
 
         return True
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f"Test failed: {e}")
         return False
 
 
@@ -135,7 +135,7 @@ def test_dataset_info():
 
         assert len(info) == 4, "Should have info for 4 subsets"
 
-        print(f"✅ Dataset info retrieved successfully")
+        print("Dataset info retrieved successfully")
         for subset, details in info.items():
             print(f"\n   {subset}:")
             print(f"      Conditions: {details['conditions']}")
@@ -144,14 +144,14 @@ def test_dataset_info():
 
         return True
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f"Test failed: {e}")
         return False
 
 
 def run_all_tests():
     """Run all tests and report results."""
     print("\n" + "="*70)
-    print("🧪 RUNNING DATA LOADER TESTS")
+    print("RUNNING DATA LOADER TESTS")
     print("="*70)
 
     tests = [
@@ -168,21 +168,21 @@ def run_all_tests():
             result = test()
             results.append(result)
         except Exception as e:
-            print(f"❌ Test crashed: {e}")
+            print(f"Test crashed: {e}")
             results.append(False)
 
     # Summary
     print("\n" + "="*70)
-    print("📊 TEST SUMMARY")
+    print("TEST SUMMARY")
     print("="*70)
     passed = sum(results)
     total = len(results)
     print(f"\nPassed: {passed}/{total}")
 
     if passed == total:
-        print("\n✅ ALL TESTS PASSED!")
+        print("\nALL TESTS PASSED!")
     else:
-        print(f"\n⚠️  {total - passed} test(s) failed")
+        print(f"\n{total - passed} test(s) failed")
 
     print("="*70 + "\n")
 
