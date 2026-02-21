@@ -31,8 +31,6 @@ The system is modular, production-oriented, and designed for extensibility acros
 
 # 3. C4 Architecture (Context, Container, Component)
 
-Questa sezione include **MVP + Target**. L'MVP e' un sottoinsieme del Target (stessi confini, meno componenti opzionali).
-
 ## 3.1 System Context (C4 - Context)
 
 ```mermaid
