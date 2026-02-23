@@ -1,0 +1,38 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements-docker.txt .
+
+# Install Python packages with increased timeout and CPU-only PyTorch
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --default-timeout=300 --no-cache-dir -r requirements-docker.txt && \
+    pip install --default-timeout=300 --no-cache-dir \
+        torch --index-url https://download.pytorch.org/whl/cpu
+
+# Copy source code
+COPY src/api/ ./src/api/
+COPY src/model/ ./src/model/
+COPY src/common/ ./src/common/
+COPY configs/ ./configs/
+
+# Create log directory
+RUN mkdir -p /app/logs
+
+# Expose API port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Start command
+CMD ["uvicorn", "src.api.inference_api:app", "--host", "0.0.0.0", "--port", "8000"]
+

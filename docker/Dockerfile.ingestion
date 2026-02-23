@@ -1,0 +1,27 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements-docker.txt .
+
+# Install Python packages with increased timeout (no PyTorch needed)
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --default-timeout=300 --no-cache-dir -r requirements-docker.txt
+
+# Copy source code
+COPY src/data_ingestion/ ./src/data_ingestion/
+COPY src/common/ ./src/common/
+COPY configs/ ./configs/
+
+# Create directories for data and logs
+RUN mkdir -p /app/data/raw /app/logs
+
+# Start command
+CMD ["python", "-m", "src.data_ingestion.data_ingestion"]
+

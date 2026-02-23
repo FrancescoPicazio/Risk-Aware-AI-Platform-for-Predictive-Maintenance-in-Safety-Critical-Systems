@@ -13,3 +13,29 @@ class TrainingPipeline(PipelineComponent):
 
     def teardown(self) -> None:
         print(f"{self.name}: teardown")
+
+
+if __name__ == "__main__":
+    import logging
+    import os
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+    logger = logging.getLogger(__name__)
+
+    # Container startup banner
+    print("\n" + "="*60)
+    print("🧠 [TRAINING PIPELINE CONTAINER ONLINE]")
+    print("="*60)
+    logger.info(f"Model Output Path: {os.getenv('MODEL_OUTPUT_PATH', '/app/data/model_artifacts')}")
+    print("="*60 + "\n")
+
+    training = TrainingPipeline()
+    training.setup()
+    training.execute()
+    training.teardown()
+    logger.info("✅ Training completed")
+
+

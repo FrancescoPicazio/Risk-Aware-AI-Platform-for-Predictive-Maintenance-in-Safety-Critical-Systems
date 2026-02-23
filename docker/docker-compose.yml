@@ -1,0 +1,206 @@
+services:
+  # 🎬 Streaming Simulator
+  simulator:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.simulator
+    container_name: risk-aware-simulator
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - OUTPUT_TOPIC=raw/sensors
+      - SIMULATION_SPEED=1.0
+    volumes:
+      - ../data/raw:/app/data/raw
+      - ../config:/app/config:ro
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # Broker MQTT (infrastruttura)
+  mqtt-broker:
+    image: eclipse-mosquitto:2.0
+    container_name: risk-aware-mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mqtt-data:/mosquitto/data
+      - mqtt-logs:/mosquitto/log
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # 📥 Data Ingestion
+  ingestion:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.ingestion
+    container_name: risk-aware-ingestion
+    depends_on:
+      - mqtt-broker
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - INPUT_TOPIC=raw/sensors
+      - OUTPUT_TOPIC=validated/data
+    volumes:
+      - ../data/raw:/app/data/raw
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # ⚙️ Feature Engineering
+  feature-engineering:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.feature_engineering
+    container_name: risk-aware-feature-eng
+    depends_on:
+      - mqtt-broker
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - INPUT_TOPIC=validated/data
+      - OUTPUT_TOPIC=processed/features
+    volumes:
+      - ../data/processed:/app/data/processed
+      - ../config:/app/config:ro
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # 🧠 Training Pipeline
+  training:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.training
+    container_name: risk-aware-training
+    environment:
+      - MODEL_OUTPUT_PATH=/app/data/model_artifacts
+    volumes:
+      - ../data/processed:/app/data/processed:ro
+      - ../data/model_artifacts:/app/data/model_artifacts
+      - ../data/results:/app/data/results
+      - ../config:/app/config:ro
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: "no"  # Eseguito manualmente o via scheduler
+
+  # 📊 Uncertainty + Failure
+  uncertainty:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.uncertainty
+    container_name: risk-aware-uncertainty
+    depends_on:
+      - mqtt-broker
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - INPUT_TOPIC=predictions/rul
+      - OUTPUT_TOPIC=predictions/uncertainty
+      - MODEL_PATH=/app/data/model_artifacts
+    volumes:
+      - ../data/model_artifacts:/app/data/model_artifacts:ro
+      - ../data/results:/app/data/results
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # ⚠️ Risk & Cost Engine
+  risk-engine:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.risk_engine
+    container_name: risk-aware-risk-engine
+    depends_on:
+      - mqtt-broker
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - INPUT_TOPIC=predictions/uncertainty
+      - OUTPUT_TOPIC=decisions/risk
+    volumes:
+      - ../data/results:/app/data/results
+      - ../config:/app/config:ro
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # 🔌 Inference API
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    container_name: risk-aware-api
+    depends_on:
+      - mqtt-broker
+      - risk-engine
+    ports:
+      - "8000:8000"
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - MODEL_PATH=/app/data/model_artifacts
+    volumes:
+      - ../data/model_artifacts:/app/data/model_artifacts:ro
+      - ../data/results:/app/data/results:ro
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # 📈 Monitoring + Drift
+  monitoring:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.monitoring
+    container_name: risk-aware-monitoring
+    depends_on:
+      - mqtt-broker
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - METRICS_TOPIC=monitoring/metrics
+    volumes:
+      - ../data/metrics:/app/data/metrics
+      - ../data/results:/app/data/results:ro
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # ⏱️ Scheduler (opzionale - può essere cron esterno)
+  scheduler:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.scheduler
+    container_name: risk-aware-scheduler
+    depends_on:
+      - simulator
+      - training
+      - monitoring
+    environment:
+      - TRAINING_SCHEDULE=0 2 * * *  # Ogni giorno alle 2 AM
+      - MONITORING_SCHEDULE=*/15 * * * *  # Ogni 15 minuti
+    volumes:
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+volumes:
+  mqtt-data:
+  mqtt-logs:
+
+networks:
+  risk-aware-network:
+    driver: bridge

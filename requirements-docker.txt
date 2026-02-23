@@ -1,12 +1,9 @@
+# Docker-optimized requirements (CPU-only PyTorch)
 # Core Data Science Libraries
 numpy>=1.24.0
 pandas>=2.0.0
 scikit-learn>=1.3.0
 scipy>=1.11.0
-
-# Deep Learning (CPU-only for Docker - lighter)
-# For GPU support, use: torch>=2.0.0 torchvision>=0.15.0
-# CPU-only version is ~200MB vs ~900MB for CUDA version
 
 # API Framework
 fastapi>=0.100.0
@@ -25,7 +22,6 @@ prometheus-client>=0.17.0
 psutil>=5.9.0
 
 # Data Validation
-pydantic>=2.0.0
 jsonschema>=4.18.0
 
 # Utilities
@@ -36,17 +32,14 @@ tqdm>=4.65.0
 # Logging
 loguru>=0.7.0
 
-# Testing (optional for dev)
+# Testing (optional for production)
 pytest>=7.4.0
 pytest-cov>=4.1.0
-httpx>=0.24.0  # For testing FastAPI
-
-# Uncertainty Quantification
-# (add specific libraries if needed, e.g., for Bayesian methods)
-
-# Survival Analysis (optional)
-lifelines>=0.27.0
+httpx>=0.24.0
 
 # Time Series
 statsmodels>=0.14.0
+
+# NOTE: PyTorch will be installed separately with --index-url flag
+# to use CPU-only version (much lighter for Docker builds)
 

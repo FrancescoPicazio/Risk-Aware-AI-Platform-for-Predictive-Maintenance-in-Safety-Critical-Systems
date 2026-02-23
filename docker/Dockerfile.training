@@ -1,0 +1,30 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements-docker.txt .
+
+# Install Python packages with increased timeout and CPU-only PyTorch
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --default-timeout=300 --no-cache-dir -r requirements-docker.txt && \
+    pip install --default-timeout=300 --no-cache-dir \
+        torch --index-url https://download.pytorch.org/whl/cpu
+
+# Copy source code
+COPY src/model/ ./src/model/
+COPY src/common/ ./src/common/
+COPY configs/ ./configs/
+
+# Create directories for model artifacts, results and logs
+RUN mkdir -p /app/data/model_artifacts /app/data/results /app/logs
+
+# Start command
+CMD ["python", "-m", "src.model.training_pipeline"]
+
