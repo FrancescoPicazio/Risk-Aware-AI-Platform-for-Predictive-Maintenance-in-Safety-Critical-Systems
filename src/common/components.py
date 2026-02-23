@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class PipelineComponent(ABC):
     """Classe base per tutti i componenti della pipeline"""
 

@@ -1,9 +1,9 @@
-from src.containers.base import PipelineComponent
+from src.common.components import PipelineComponent
 
 
-class TrainingPipeline(PipelineComponent):
+class MonitoringAndDrift(PipelineComponent):
     def __init__(self):
-        super().__init__("TrainingPipeline")
+        super().__init__("MonitoringAndDrift")
 
     def setup(self) -> None:
         print(f"{self.name}: setup")

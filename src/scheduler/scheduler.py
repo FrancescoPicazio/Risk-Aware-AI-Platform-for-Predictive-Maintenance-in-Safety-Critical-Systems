@@ -1,4 +1,4 @@
-from src.containers.base import PipelineComponent
+from src.common.components import PipelineComponent
 
 class Scheduler:
     components = []

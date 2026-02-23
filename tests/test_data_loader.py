@@ -5,8 +5,7 @@ Unit tests for CMAPSS Data Loader
 import sys
 sys.path.append('..')
 
-from src.data_ingestion.data_ingestion_layer import CMAPSSDataLoader
-import pandas as pd
+from src.common.DTO import CMAPSSDataLoader
 
 
 def test_load_train_data():

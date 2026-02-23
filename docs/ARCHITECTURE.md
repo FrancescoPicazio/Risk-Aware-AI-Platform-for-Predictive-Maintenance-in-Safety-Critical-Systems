@@ -57,26 +57,52 @@ flowchart TB
     sched["⏱️ Scheduler"]
   end
 
-  raw[(data/raw)] -->|read| sim
+  raw[(data/raw)]
+  proc[(data/processed)]
+  artifacts[(data/model_artifacts)]
+  metrics[(data/metrics)]
+  results[(data/results)]
+
+  raw --> sim
   sim --> ingest
-  ingest --> fe --> train --> uq --> risk
+  ingest --> fe
+  fe --> train
+  train --> uq
+  uq --> risk
+  risk <--> results
+  uq <--> results
   risk --> api
+  api <--> results
   api --> mon
-  fe --> proc[(data/processed)]
-  train --> artifacts[(data/model_artifacts)]
-  mon --> metrics[(data/metrics)]
+  mon <--> results
+  fe --> proc
+  train --> artifacts
+  train --> results
+  mon --> metrics
   sched --> sim
-  sched --> ingest
   sched --> train
   sched --> mon
+
+  %% Colori frecce
+  linkStyle 1,2,3,4,5,8,10 stroke:#DB00DB,stroke-width:2px
+  linkStyle 0,6,7,9,11,12,13,14,15 stroke:#4C9AD9,stroke-width:2px
 ```
+
+**Legenda frecce:**
+- ⚪ **White**: Scheduler
+- 🟣 **Violet**: MQTT
+- 🔵 **Blue**: Data flow
+
 
 ## 3.3 Components (C4 - Component)
 
 ```mermaid
 flowchart TB
-  subgraph Ingestion["📥 Data Ingestion Layer"]
+  subgraph Streaming["🎬 Streaming Simulator"]
     simc["🎬 Streaming Simulator"]
+  end
+  
+  subgraph Ingestion["📥 Data Ingestion Layer"]
     loader["📂 Batch Loader"]
     validate["✓ Data Validation"]
   end
@@ -119,6 +145,8 @@ flowchart TB
 
   simc --> loader --> validate --> norm --> window --> health --> lstm --> mcd --> calib --> survival --> cost --> policy --> predict
   predict --> metricsep
+  predict --> healthz
+  predict --> riskep
   lstm --> metrics
   lstm --> cv
   predict --> drift

@@ -1,23 +1,21 @@
-from src.containers.scheduler import Scheduler
-from src.containers.streaming import Streaming
-from src.containers.data_ingestion import DataIngestion
-from src.containers.training_pipeline import TrainingPipeline
-from src.containers.monitoring_and_drift import MonitoringAndDrift
-
+from src.scheduler.scheduler import Scheduler
+from src.streaming.streaming import Streaming
+from src.model.training_pipeline import TrainingPipeline
+from src.monitoring.monitoring_and_drift import MonitoringAndDrift
+import configs.config
 
 def main():
     """Entry point della pipeline"""
     scheduler = Scheduler()
 
     # Istanzia i componenti
-    streaming = Streaming()
-    data_ingestion = DataIngestion()
-    training_pipeline = TrainingPipeline()
-    monitoring_and_drift = MonitoringAndDrift()
+    streaming = Streaming(configs.STREAMING_TIME_INTERVAL)
+    training_pipeline = TrainingPipeline(configs.TRAINING_TIME_INTERVAL)
+    monitoring_and_drift = MonitoringAndDrift(configs.MONITORING_TIME_INTERVAL)
 
     # Configura e avvia lo scheduler
     scheduler.schedule_pipeline(
-        [streaming, data_ingestion, training_pipeline, monitoring_and_drift]
+        [streaming, training_pipeline, monitoring_and_drift]
     )
 
     scheduler.start()

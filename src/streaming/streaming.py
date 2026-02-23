@@ -1,8 +1,8 @@
-from src.containers.base import PipelineComponent
+from src.common.components import PipelineComponent
 
 
 class Streaming(PipelineComponent):
-    def __init__(self):
+    def __init__(self, ):
         super().__init__("Streaming")
 
     def setup(self) -> None:
