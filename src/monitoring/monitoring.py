@@ -1,3 +1,8 @@
+import logging
+import time
+import os
+
+from configs import config
 from src.common.components import PipelineComponent
 
 
@@ -16,10 +21,6 @@ class Monitoring(PipelineComponent):
 
 
 if __name__ == "__main__":
-    import logging
-    import time
-    import os
-
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -40,7 +41,7 @@ if __name__ == "__main__":
     try:
         while True:
             monitoring.execute()
-            time.sleep(60)
+            time.sleep(config.MONITORING_TIME_INTERVAL)
     except KeyboardInterrupt:
         monitoring.teardown()
         logger.info("🛑 Monitoring stopped")

@@ -316,8 +316,7 @@ cp docker/.env.example docker/.env
 ```
 
 For detailed Docker setup, see:
-- 📦 **[docker/README.md](docker/README.md)** – Complete Docker deployment guide
-- 🔧 **[docker/DOCKER_SETUP.md](docker/DOCKER_SETUP.md)** – Detailed setup documentation
+- 📦 **[docs/DOCKER.md](docs/DOCKER.md)** – Complete Docker deployment guide
 
 #### Option 2: Local Development (Without Docker)
 
@@ -699,7 +698,7 @@ If you use this work in your research or project, please cite:
 ```bibtex
 @misc{risk_aware_ai_platform,
   title={Risk-Aware AI Platform for Predictive Maintenance in Safety-Critical Systems},
-  author={Your Name},
+  author={Francesco Picazio},
   year={2026},
   url={https://github.com/yourusername/Risk-Aware-AI-Platform}
 }
@@ -930,7 +929,7 @@ Se utilizzi questo lavoro nella tua ricerca o progetto, per favore cita:
 ```bibtex
 @misc{risk_aware_ai_platform,
   title={Risk-Aware AI Platform for Predictive Maintenance in Safety-Critical Systems},
-  author={Il Tuo Nome},
+  author={Francesco Picazio},
   year={2026},
   url={https://github.com/tuousername/Risk-Aware-AI-Platform}
 }

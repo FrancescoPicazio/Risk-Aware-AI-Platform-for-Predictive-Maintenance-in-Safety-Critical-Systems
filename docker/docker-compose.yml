@@ -12,7 +12,7 @@ services:
       - SIMULATION_SPEED=1.0
     volumes:
       - ../data/raw:/app/data/raw
-      - ../config:/app/config:ro
+      - ../configs:/app/configs:ro
       - ../logs:/app/logs
     networks:
       - risk-aware-network
@@ -26,7 +26,7 @@ services:
       - "1883:1883"
       - "9001:9001"
     volumes:
-      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mosquitto/mosquitto.conf:/mosquitto/configs/mosquitto.conf
       - mqtt-data:/mosquitto/data
       - mqtt-logs:/mosquitto/log
     networks:
@@ -68,7 +68,7 @@ services:
       - OUTPUT_TOPIC=processed/features
     volumes:
       - ../data/processed:/app/data/processed
-      - ../config:/app/config:ro
+      - ../configs:/app/configs:ro
       - ../logs:/app/logs
     networks:
       - risk-aware-network
@@ -86,7 +86,7 @@ services:
       - ../data/processed:/app/data/processed:ro
       - ../data/model_artifacts:/app/data/model_artifacts
       - ../data/results:/app/data/results
-      - ../config:/app/config:ro
+      - ../configs:/app/configs:ro
       - ../logs:/app/logs
     networks:
       - risk-aware-network
@@ -129,7 +129,7 @@ services:
       - OUTPUT_TOPIC=decisions/risk
     volumes:
       - ../data/results:/app/data/results
-      - ../config:/app/config:ro
+      - ../configs:/app/configs:ro
       - ../logs:/app/logs
     networks:
       - risk-aware-network

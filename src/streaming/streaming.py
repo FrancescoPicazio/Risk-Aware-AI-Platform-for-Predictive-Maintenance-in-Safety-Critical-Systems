@@ -1,3 +1,8 @@
+import logging
+import time
+import os
+
+from configs import config
 from src.common.components import PipelineComponent
 
 
@@ -16,9 +21,6 @@ class Streaming(PipelineComponent):
 
 
 if __name__ == "__main__":
-    import logging
-    import time
-    import os
 
     logging.basicConfig(
         level=logging.INFO,
@@ -41,7 +43,7 @@ if __name__ == "__main__":
     try:
         while True:
             streaming.execute()
-            time.sleep(60)
+            time.sleep(config.STREAMING_TIME_INTERVAL)
     except KeyboardInterrupt:
         streaming.teardown()
         logger.info("🛑 Streaming Simulator stopped")

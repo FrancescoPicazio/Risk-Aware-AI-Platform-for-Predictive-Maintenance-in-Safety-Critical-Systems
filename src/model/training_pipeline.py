@@ -1,5 +1,9 @@
-from src.common.components import PipelineComponent
+import logging
+import time
+import os
 
+from configs import config
+from src.common.components import PipelineComponent
 
 class TrainingPipeline(PipelineComponent):
     def __init__(self):
@@ -16,8 +20,7 @@ class TrainingPipeline(PipelineComponent):
 
 
 if __name__ == "__main__":
-    import logging
-    import os
+
 
     logging.basicConfig(
         level=logging.INFO,
@@ -34,8 +37,14 @@ if __name__ == "__main__":
 
     training = TrainingPipeline()
     training.setup()
-    training.execute()
-    training.teardown()
-    logger.info("✅ Training completed")
+
+    try:
+        while True:
+            training.execute()
+            logger.info("✅ Training completed")
+            time.sleep(config.TRAINING_TIME_INTERVAL)
+    except KeyboardInterrupt:
+        training.teardown()
+        logger.info("🛑 Training stopped")
 
 
