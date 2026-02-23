@@ -229,25 +229,392 @@ For complete KPI details, see:
 
 ### Prerequisites
 
-```bash
-Python 3.10
-PyTorch 2.10
-FastAPI
-Docker (optional, for deployment)
-```
+- **Python 3.11+**
+- **Docker & Docker Compose 2.0+** (for containerized deployment)
+- **8GB RAM minimum** (16GB recommended for training)
+- **10GB free disk space**
 
 ### Installation
 
+#### Option 1: Docker Deployment (Recommended for Production)
+
+The platform is fully containerized with 9 microservices orchestrated via Docker Compose:
+
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/Risk-Aware-AI-Platform.git
-cd Risk-Aware-AI-Platform
+# 1. Clone the repository
+git clone <repository-url>
+cd Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# 2. Build all Docker images
+./manage.ps1 build    # Windows PowerShell
+./manage.sh build     # Linux/Mac Bash
 
-# Install dependencies
+# 3. Start all services
+./manage.ps1 up       # Windows
+./manage.sh up        # Linux/Mac
+
+# 4. Check services status
+./manage.ps1 ps
+
+# 5. View logs with container banners
+./manage.ps1 logs
+
+# 6. Stop all services
+./manage.ps1 down
+```
+
+**Services started:**
+- 🎬 Streaming Simulator (data streaming)
+- 📥 Data Ingestion (MQTT subscriber)
+- ⚙️ Feature Engineering (feature processing)
+- 🧠 Training Pipeline (model training)
+- 📊 Uncertainty Quantification (UQ analysis)
+- ⚠️ Risk & Cost Engine (risk calculation)
+- 🔌 Inference API (FastAPI on :8000)
+- 📈 Monitoring & Drift Detection
+- ⏱️ Scheduler (task orchestration)
+- 🌐 MQTT Broker (Eclipse Mosquitto on :1883)
+
+**Access Points:**
+- **API**: http://localhost:8000
+- **API Docs**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
+- **Metrics**: http://localhost:8000/metrics
+- **MQTT Broker**: localhost:1883
+
+**Docker Commands:**
+
+```bash
+# Build specific service
+docker-compose build api
+
+# Start specific service
+docker-compose up simulator
+
+# View logs for specific service
+docker-compose logs -f api
+
+# Restart service
+docker-compose restart api
+
+# Enter container shell
+docker exec -it risk-aware-api bash
+
+# Subscribe to MQTT topics
+docker exec -it risk-aware-mqtt mosquitto_sub -h localhost -t '#' -v
+
+# Clean everything (including volumes)
+./manage.ps1 clean
+```
+
+**Environment Configuration:**
+
+Copy and customize environment variables:
+```bash
+cp docker/.env.example docker/.env
+# Edit docker/.env with your configuration
+```
+
+For detailed Docker setup, see:
+- 📦 **[docker/README.md](docker/README.md)** – Complete Docker deployment guide
+- 🔧 **[docker/DOCKER_SETUP.md](docker/DOCKER_SETUP.md)** – Detailed setup documentation
+
+#### Option 2: Local Development (Without Docker)
+
+For development and debugging without containerization:
+
+```bash
+# 1. Create virtual environment
+python -m venv .venv
+
+# Activate environment
+source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate     # Windows
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Download CMAPSS dataset (if not present)
+# Place files in data/raw/:
+# - train_FD001.txt, test_FD001.txt, RUL_FD001.txt
+# - (repeat for FD002, FD003, FD004)
+
+# 4. Run local orchestration
+python main.py
+```
+
+**Note**: 
+- Local mode runs components **sequentially** without microservices architecture
+- Recommended only for **development and debugging**
+- For production deployment, use **Docker Compose**
+
+---
+
+## 📦 Dataset Setup
+
+This project uses the **NASA CMAPSS (C-MAPSS) dataset** for turbofan engine degradation.
+
+### Download Dataset
+
+1. Download from [NASA Prognostics Data Repository](https://ti.arc.nasa.gov/tech/dash/groups/pcoe/prognostic-data-repository/)
+2. Extract files to `data/raw/` directory:
+   ```
+   data/raw/
+   ├── train_FD001.txt
+   ├── test_FD001.txt
+   ├── RUL_FD001.txt
+   ├── train_FD002.txt
+   ├── test_FD002.txt
+   ├── RUL_FD002.txt
+   ├── train_FD003.txt
+   ├── test_FD003.txt
+   ├── RUL_FD003.txt
+   ├── train_FD004.txt
+   ├── test_FD004.txt
+   └── RUL_FD004.txt
+   ```
+
+### Dataset Description
+
+- **4 sub-datasets** (FD001-FD004)
+- **Multiple operating conditions** and fault modes
+- **21 sensor measurements** per time step
+- **Run-to-failure trajectories**
+
+For detailed dataset documentation, see:
+- 📊 **[DATASET.md](docs/DATASET.md)** – Complete dataset specifications
+
+---
+
+## 🔌 API Usage
+
+### Health Check
+
+```bash
+curl http://localhost:8000/health
+```
+
+Response:
+```json
+{
+  "status": "healthy",
+  "service": "inference-api"
+}
+```
+
+### RUL Prediction
+
+```bash
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "engine_id": 1,
+    "sensor_data": {
+      "sensor_1": 518.67,
+      "sensor_2": 641.82,
+      "sensor_3": 1589.70
+    }
+  }'
+```
+
+Response:
+```json
+{
+  "rul_mean": 100.0,
+  "rul_std": 10.0,
+  "confidence_interval_lower": 80.0,
+  "confidence_interval_upper": 120.0,
+  "uncertainty_score": 0.1
+}
+```
+
+### Risk Assessment
+
+```bash
+curl -X POST http://localhost:8000/risk \
+  -H "Content-Type: application/json" \
+  -d '{
+    "engine_id": 1,
+    "sensor_data": { ... }
+  }'
+```
+
+Response:
+```json
+{
+  "risk_score": 0.3,
+  "failure_probability": 0.15,
+  "maintenance_urgency": "medium",
+  "recommended_action": "Schedule inspection within 50 cycles",
+  "cost_estimate": 5000.0
+}
+```
+
+### Metrics (Prometheus Format)
+
+```bash
+curl http://localhost:8000/metrics
+```
+
+---
+
+## 🐳 Docker Architecture
+
+The platform uses a **microservices architecture** with the following containers:
+
+| Service | Container | Port | Description |
+|---------|-----------|------|-------------|
+| MQTT Broker | `risk-aware-mqtt` | 1883, 9001 | Eclipse Mosquitto message broker |
+| Simulator | `risk-aware-simulator` | - | Streams simulated sensor data |
+| Ingestion | `risk-aware-ingestion` | - | Validates and processes incoming data |
+| Feature Eng | `risk-aware-feature-eng` | - | Extracts features from validated data |
+| Training | `risk-aware-training` | - | Trains RUL prediction models |
+| Uncertainty | `risk-aware-uncertainty` | - | Quantifies prediction uncertainty |
+| Risk Engine | `risk-aware-risk-engine` | - | Calculates risk scores |
+| API | `risk-aware-api` | 8000 | FastAPI inference service |
+| Monitoring | `risk-aware-monitoring` | - | Drift detection and performance tracking |
+| Scheduler | `risk-aware-scheduler` | - | Orchestrates periodic tasks |
+
+**Inter-Service Communication:**
+- **MQTT** for asynchronous message passing
+- **Shared volumes** for data and model artifacts
+- **Docker network** for service discovery
+
+**MQTT Topics:**
+- `raw/sensors` - Raw sensor data from simulator
+- `validated/data` - Validated sensor data
+- `processed/features` - Engineered features
+- `predictions/rul` - RUL predictions
+- `predictions/uncertainty` - Uncertainty quantification
+- `decisions/risk` - Risk scores and recommendations
+- `monitoring/metrics` - System metrics
+
+---
+
+## 🧪 Testing
+
+### Run Tests
+
+```bash
+# All tests
+pytest
+
+# With coverage
+pytest --cov=src --cov-report=html
+
+# Specific test file
+pytest tests/test_data_loader.py
+```
+
+### Test API Endpoints
+
+```bash
+# Using httpx (included in requirements)
+python -m pytest tests/test_api.py
+
+# Or manually with curl
+curl http://localhost:8000/health
+```
+
+---
+
+## 📈 Monitoring & Observability
+
+### View Container Logs
+
+```bash
+# All services
+./manage.ps1 logs
+
+# Specific service
+docker-compose logs -f api
+
+# With timestamps
+docker-compose logs -f --timestamps api
+```
+
+### Monitor MQTT Messages
+
+```bash
+# Subscribe to all topics
+docker exec -it risk-aware-mqtt mosquitto_sub -h localhost -t '#' -v
+
+# Specific topic
+docker exec -it risk-aware-mqtt mosquitto_sub -h localhost -t 'raw/sensors'
+```
+
+### Prometheus Metrics
+
+Metrics are exposed at `/metrics` endpoint in Prometheus format.
+
+To integrate with Prometheus:
+1. Uncomment Prometheus service in `docker-compose.yml`
+2. Configure scrape target in `docker/prometheus/prometheus.yml`
+3. Access Prometheus UI at `http://localhost:9090`
+
+---
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Key environment variables (see `docker/.env.example`):
+
+```bash
+# MQTT Configuration
+MQTT_BROKER=mqtt-broker
+MQTT_PORT=1883
+
+# Model Configuration
+MODEL_PATH=/app/data/model_artifacts
+
+# Logging
+LOG_LEVEL=INFO
+
+# Scheduler
+TRAINING_SCHEDULE=0 2 * * *  # Daily at 2 AM
+MONITORING_SCHEDULE=*/15 * * * *  # Every 15 minutes
+```
+
+### Model Configuration
+
+Edit `configs/config.py` for:
+- Hyperparameters (LSTM layers, hidden size)
+- Training parameters (learning rate, batch size)
+- Feature engineering settings
+- Risk thresholds
+
+---
+
+## 🚧 Development Roadmap
+
+Current status and upcoming features:
+
+- ✅ **Completed**:
+  - Docker containerization with 9 microservices
+  - MQTT-based inter-service communication
+  - FastAPI inference API
+  - Base component structure (PipelineComponent)
+  - Comprehensive documentation
+
+- 🔄 **In Progress**:
+  - LSTM model implementation
+  - Feature engineering pipeline
+  - Uncertainty quantification (MC Dropout)
+  - Risk & cost optimization engine
+
+- 📋 **Planned**:
+  - Complete training pipeline
+  - Monitoring & drift detection algorithms
+  - Grafana dashboards
+  - Automated retraining triggers
+  - Full test coverage
+
+For detailed roadmap, see:
+- 🗺️ **[ROADMAP.md](docs/ROADMAP.md)** – Development timeline
+- ✅ **[TASKS.md](docs/TASKS.md)** – Task breakdown with checkboxes
+
+---
 pip install -r requirements.txt
 ```
 
