@@ -1,7 +1,9 @@
 # Risk-Aware AI Platform for Predictive Maintenance in Safety-Critical Systems
 
-[![Python](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.10-red.svg)](https://pytorch.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.131-green.svg)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-In%20Development-yellow.svg)]()
 
@@ -44,9 +46,114 @@ This platform addresses all these limitations.
 
 ---
 
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Python 3.11+**
+- **Docker & Docker Compose** (for containerized deployment)
+- **8GB RAM minimum** (16GB recommended)
+- **10GB free disk space**
+
+### Option 1: Docker Deployment (Recommended)
+
+The fastest way to run the entire platform:
+
+```bash
+# 1. Clone the repository
+git clone <repository-url>
+cd Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems
+
+# 2. Build all services
+./manage.ps1 build    # Windows
+./manage.sh build     # Linux/Mac
+
+# 3. Start the platform
+./manage.ps1 up       # Windows
+./manage.sh up        # Linux/Mac
+
+# 4. Check services status
+./manage.ps1 ps       # Windows
+./manage.sh ps        # Linux/Mac
+
+# 5. View logs
+./manage.ps1 logs     # Windows
+./manage.sh logs      # Linux/Mac
+```
+
+**Access the API**: http://localhost:8000
+- Health check: `http://localhost:8000/health`
+- API docs: `http://localhost:8000/docs`
+- Metrics: `http://localhost:8000/metrics`
+
+### Option 2: Local Development
+
+For development without Docker:
+
+```bash
+# 1. Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate     # Windows
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Run local orchestration
+python main.py
+```
+
+**Note**: Local mode runs components sequentially without containerization. For production use, Docker deployment is recommended.
+
+---
+
+## 📁 Project Structure
+
+```
+Risk-Aware-AI-Platform/
+├── data/                          # Data directory
+│   ├── raw/                       # CMAPSS dataset files
+│   ├── processed/                 # Processed features
+│   ├── model_artifacts/           # Trained models
+│   ├── results/                   # Prediction results
+│   └── metrics/                   # Performance metrics
+├── docker/                        # Docker configuration
+│   ├── Dockerfile.*               # Service-specific Dockerfiles
+│   ├── docker-compose.yml         # Orchestration configuration
+│   ├── mosquitto/                 # MQTT broker config
+│   └── README.md                  # Docker deployment guide
+├── docs/                          # Documentation
+│   ├── ARCHITECTURE.md            # System architecture (C4 model)
+│   ├── ADR.md                     # Architecture Decision Records
+│   ├── REQUIREMENTS_AND_KPI.md    # Requirements and KPIs
+│   ├── DATASET.md                 # Dataset documentation
+│   ├── ROADMAP.md                 # Development roadmap
+│   └── TASKS.md                   # Task breakdown
+├── src/                           # Source code
+│   ├── streaming/                 # Data streaming simulator
+│   ├── data_ingestion/            # Data ingestion layer
+│   ├── feature_engineering/       # Feature engineering
+│   ├── model/                     # ML models (LSTM)
+│   ├── uncertainty_and_failure/   # Uncertainty quantification
+│   ├── risk_and_cost/             # Risk & cost engine
+│   ├── api/                       # FastAPI inference service
+│   ├── monitoring/                # Drift detection & monitoring
+│   ├── scheduler/                 # Task orchestration
+│   └── common/                    # Shared components
+├── tests/                         # Unit tests
+├── configs/                       # Configuration files
+├── main.py                        # Local development entry point
+├── requirements.txt               # Python dependencies (local)
+├── requirements-docker.txt        # Python dependencies (Docker)
+├── manage.ps1                     # Docker management (Windows)
+└── manage.sh                      # Docker management (Linux/Mac)
+```
+
+---
+
 ## 🏗️ Architecture
 
-The system follows a **modular, pipeline-based architecture** with clear separation of concerns:
+The system follows a **modular, microservices-based architecture** with clear separation of concerns:
 
 ```
 Data Ingestion → Feature Engineering → RUL Modeling → 
