@@ -37,6 +37,7 @@ def _verify_data_files():
 class Streaming(PipelineComponent):
     _experiment_files = []
     enabled = False
+    is_streaming = False
 
     def __init__(self):
         super().__init__("Streaming", [config.MQTT["TOPICS"]["SCHEDULER"]])
@@ -55,31 +56,40 @@ class Streaming(PipelineComponent):
     def execute(self) -> None:
         logging.info(f"{self.name}: execute")
         logging.info("Waiting from scheduler to trigger data streaming...")
-        for experiment_file in self._experiment_files:
-            logging.info(f"Streaming data from: {experiment_file}")
-            with open(experiment_file, 'r') as f:
-                for idx, line in enumerate(f, 1):
-                    # Parse line (CMAPSS format)
-                    values = line.strip().split()
-                    # Create JSON payload
-                    payload = {
-                        "unit_id": int(values[0]),
-                        "cycle": int(values[1]),
-                        "operational_settings": [float(values[2]), float(values[3]), float(values[4])],
-                        "sensor_measurements": [float(v) for v in values[5:]],
-                        "timestamp": time.time(),
-                        "source_file": os.path.basename(experiment_file)
-                    }
-                    is_message_sent = self.send_message(config.MQTT["TOPICS"]["DATA_INGESTION"],payload)
-                    if idx % 100 == 0 and is_message_sent:
-                        logging.info(f"Streamed {idx} lines from {experiment_file}")
-                    elif not is_message_sent:
-                        logging.error(f"Failed to publish record #{idx}")
-                    time.sleep(config.TIMERS["STREAMING"]) # Simulate real-time streaming
+        self.is_streaming = True
+        try:
+            for experiment_file in self._experiment_files:
+                logging.info(f"Streaming data from: {experiment_file}")
+                with open(experiment_file, 'r') as f:
+                    for idx, line in enumerate(f, 1):
+                        # Parse line (CMAPSS format)
+                        values = line.strip().split()
+                        # Create JSON payload
+                        payload = {
+                            "unit_id": int(values[0]),
+                            "cycle": int(values[1]),
+                            "operational_settings": [float(values[2]), float(values[3]), float(values[4])],
+                            "sensor_measurements": [float(v) for v in values[5:]],
+                            "timestamp": time.time(),
+                            "source_file": os.path.basename(experiment_file)
+                        }
+                        is_message_sent = self.send_message(config.MQTT["TOPICS"]["DATA_INGESTION"],payload)
+                        if idx % 100 == 0 and is_message_sent:
+                            logging.info(f"Streamed {idx} lines from {experiment_file}")
+                        elif not is_message_sent:
+                            logging.error(f"Failed to publish record #{idx}")
+                        time.sleep(config.TIMERS["STREAMING"]) # Simulate real-time streaming
+        except Exception as e:
+            logging.error(f"Error during streaming: {e}")
+
+        self.is_streaming = False
 
     def on_message_received(self, payload: dict) -> None:
         print(f"{self.name}: message received - {payload}")
-        self.enabled = payload["type"] == "STREAMING"
+        if not self.is_streaming:
+            self.enabled = payload["type"] == "STREAMING"
+        else:
+            logging.warning(f"{self.name}: Received new streaming trigger while already streaming. Ignoring new trigger until current streaming is complete.")
 
     def teardown(self) -> None:
         super().teardown()
