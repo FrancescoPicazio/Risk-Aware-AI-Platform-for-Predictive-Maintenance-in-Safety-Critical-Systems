@@ -37,6 +37,7 @@ function Build-Images {
         Write-Host "Build failed!" -ForegroundColor Red
         exit 1
     }
+    Set-Location $ProjectRoot
 }
 
 function Start-Services {
@@ -51,6 +52,7 @@ function Start-Services {
         Write-Host "Failed to start services!" -ForegroundColor Red
         exit 1
     }
+    Set-Location $ProjectRoot
 }
 
 function Stop-Services {
@@ -63,6 +65,7 @@ function Stop-Services {
         Write-Host "Failed to stop services!" -ForegroundColor Red
         exit 1
     }
+    Set-Location $ProjectRoot
 }
 
 function Restart-Services {
@@ -75,12 +78,14 @@ function Show-Logs {
     Write-Host "Showing logs (Ctrl+C to exit)..." -ForegroundColor Cyan
     Set-Location $DockerDir
     docker-compose logs -f
+    Set-Location $ProjectRoot
 }
 
 function Show-Status {
     Write-Host "Container Status:" -ForegroundColor Cyan
     Set-Location $DockerDir
     docker-compose ps
+    Set-Location $ProjectRoot
 }
 
 function Clean-All {
@@ -95,6 +100,7 @@ function Clean-All {
     } else {
         Write-Host "Cleanup cancelled." -ForegroundColor Yellow
     }
+    Set-Location $ProjectRoot
 }
 
 # Main execution

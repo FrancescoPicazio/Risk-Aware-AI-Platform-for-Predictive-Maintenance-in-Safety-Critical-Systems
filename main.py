@@ -27,19 +27,6 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    """
-    Local entry point to orchestrate components without Docker.
-
-    WARNING: In production, use Docker Compose:
-        cd docker
-        docker-compose up
-    """
-    print("\n" + "="*70)
-    print("🚀 LOCAL DEVELOPMENT MODE - Running without Docker")
-    print("="*70)
-    print("⚠️  NOTE: For production, use: cd docker && docker-compose up")
-    print("="*70 + "\n")
-
     logger.info("Initializing local scheduler...")
     scheduler = Scheduler()
 
@@ -54,11 +41,11 @@ def main():
         [streaming, training_pipeline, monitoring]
     )
 
-    logger.info("▶️  Starting local pipeline...")
+    logger.info("Starting local pipeline...")
     try:
         scheduler.start()
     except KeyboardInterrupt:
-        logger.info("\n🛑 Local pipeline interrupted by user")
+        logger.info("\nLocal pipeline interrupted by user")
         print("\n" + "="*70)
         print("To use Docker: cd docker && docker-compose up")
         print("="*70 + "\n")

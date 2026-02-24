@@ -1,10 +1,13 @@
 services:
-  # 🎬 Streaming Simulator
+  # Streaming Simulator
   simulator:
     build:
       context: ..
       dockerfile: docker/Dockerfile.simulator
     container_name: risk-aware-simulator
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
@@ -26,21 +29,27 @@ services:
       - "1883:1883"
       - "9001:9001"
     volumes:
-      - ./mosquitto/mosquitto.conf:/mosquitto/configs/mosquitto.conf
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - mqtt-data:/mosquitto/data
       - mqtt-logs:/mosquitto/log
     networks:
       - risk-aware-network
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "mosquitto_sub", "-t", "$$SYS/#", "-C", "1", "-i", "healthcheck", "-W", "3" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
-  # 📥 Data Ingestion
+  # Data Ingestion
   ingestion:
     build:
       context: ..
       dockerfile: docker/Dockerfile.ingestion
     container_name: risk-aware-ingestion
     depends_on:
-      - mqtt-broker
+      mqtt-broker:
+        condition: service_healthy
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
@@ -53,7 +62,7 @@ services:
       - risk-aware-network
     restart: unless-stopped
 
-  # ⚙️ Feature Engineering
+  # Feature Engineering
   feature-engineering:
     build:
       context: ..
@@ -74,7 +83,7 @@ services:
       - risk-aware-network
     restart: unless-stopped
 
-  # 🧠 Training Pipeline
+  # Training Pipeline
   training:
     build:
       context: ..
@@ -92,7 +101,7 @@ services:
       - risk-aware-network
     restart: "no"  # Eseguito manualmente o via scheduler
 
-  # 📊 Uncertainty + Failure
+  # Uncertainty + Failure
   uncertainty:
     build:
       context: ..
@@ -114,7 +123,7 @@ services:
       - risk-aware-network
     restart: unless-stopped
 
-  # ⚠️ Risk & Cost Engine
+  # Risk & Cost Engine
   risk-engine:
     build:
       context: ..
@@ -135,7 +144,7 @@ services:
       - risk-aware-network
     restart: unless-stopped
 
-  # 🔌 Inference API
+  # Inference API
   api:
     build:
       context: ..
@@ -158,7 +167,7 @@ services:
       - risk-aware-network
     restart: unless-stopped
 
-  # 📈 Monitoring + Drift
+  # Monitoring + Drift
   monitoring:
     build:
       context: ..
@@ -178,7 +187,7 @@ services:
       - risk-aware-network
     restart: unless-stopped
 
-  # ⏱️ Scheduler (opzionale - può essere cron esterno)
+  # Scheduler (opzionale - può essere cron esterno)
   scheduler:
     build:
       context: ..
