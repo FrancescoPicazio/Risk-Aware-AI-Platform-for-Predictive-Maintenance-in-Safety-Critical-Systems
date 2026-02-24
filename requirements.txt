@@ -50,3 +50,8 @@ lifelines>=0.27.0
 # Time Series
 statsmodels>=0.14.0
 
+
+croniter~=6.0.0
+python-dateutil~=2.9.0.post0
+matplotlib~=3.10.8
+seaborn~=0.13.2

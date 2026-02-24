@@ -1,46 +1,70 @@
+import time
+from datetime import datetime
+
+from croniter import croniter
+from dateutil.tz import UTC
+
+from configs import config
 from src.common.components import PipelineComponent
 
-class Scheduler:
-    components = []
+class Scheduler(PipelineComponent):
 
-    def schedule_pipeline(self, components: list[PipelineComponent]) -> None:
-        self.components = components
-        print("=== Scheduler setup ===")
-        for component in self.components:
-            component.setup()
+    def __init__(self):
+        self.name = "Scheduler"
+        super().__init__("Scheduler")
+
+        now = datetime.now(UTC)
+        self._stream_iter = croniter(config.TIMERS["STREAMING_REPEAT_PAUSE"], now)
+        self._training_iter = croniter(config.TIMERS["TRAINING_SCHEDULE"], now)
+        self._monitoring_iter = croniter(config.TIMERS["MONITORING_SCHEDULE"], now)
+
+        self._next_stream = self._stream_iter.get_next(datetime)
+        self._next_training = self._training_iter.get_next(datetime)
+        self._next_monitoring = self._monitoring_iter.get_next(datetime)
+
+
+
+    def setup(self):
+        super().setup()
 
     def start(self) -> None:
         print("=== Scheduler started ===")
-        for component in self.components:
-            component.start()
+
+    def on_message_received(self, payload: dict) -> None:
+        print(f"{self.name}: message received - {payload}")
+
+    def execute(self) -> None:
+        now = datetime.now(UTC)
+
+        if now >= self._next_stream:
+            self.logger.info(f"{self.name}: triggering data streaming at {now.isoformat()}")
+            self.send_message(config.MQTT["TOPICS"]["SCHEDULER"],{"type": "STREAMING", "timestamp": time.time()})
+            self._next_stream = self._stream_iter.get_next(datetime)
+
+        if now >= self._next_training:
+            self.logger.info(f"{self.name}: triggering model training at {now.isoformat()}")
+            self.send_message(config.MQTT["TOPICS"]["SCHEDULER"],{"type": "TRAINING", "timestamp": time.time()})
+            self._next_training = self._training_iter.get_next(datetime)
+
+        if now >= self._next_monitoring:
+            self.logger.info(f"{self.name}: triggering monitoring at {now.isoformat()}")
+            self.send_message(config.MQTT["TOPICS"]["SCHEDULER"],{"type": "MONITORING", "timestamp": time.time()})
+            self._next_monitoring = self._monitoring_iter.get_next(datetime)
+
+        time.sleep(config.TIMERS["STREAMING"])
+
+    def teardown(self) -> None:
+        super().teardown()
+        print(f"{self.name}: teardown")
 
 if __name__ == "__main__":
-    import logging
-    import time
-    import os
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
-    logger = logging.getLogger(__name__)
-
-    # Container startup banner
-    print("\n" + "="*60)
-    print("⏱️  [SCHEDULER CONTAINER ONLINE]")
-    print("="*60)
-    logger.info(f"Training Schedule: {os.getenv('TRAINING_SCHEDULE', '0 2 * * *')}")
-    logger.info(f"Monitoring Schedule: {os.getenv('MONITORING_SCHEDULE', '*/15 * * * *')}")
-    print("="*60 + "\n")
-
     scheduler = Scheduler()
-
-    # TODO: Implement actual scheduling logic
-    logger.info("Scheduler initialized - awaiting tasks...")
+    scheduler.setup()
 
     try:
         while True:
-            time.sleep(60)
-            logger.info("⏱️  Scheduler heartbeat...")
+            scheduler.execute()
     except KeyboardInterrupt:
-        logger.info("🛑 Scheduler stopped")
+        pass
+
+    scheduler.teardown()

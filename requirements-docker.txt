@@ -40,6 +40,10 @@ httpx>=0.24.0
 # Time Series
 statsmodels>=0.14.0
 
+# Timer
+croniter~=6.0.0
+python-dateutil~=2.9.0.post0
+
 # NOTE: PyTorch will be installed separately with --index-url flag
 # to use CPU-only version (much lighter for Docker builds)
 

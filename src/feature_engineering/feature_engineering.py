@@ -1,15 +1,19 @@
 from src.common.components import PipelineComponent
-
+from configs import config
 
 class FeatureEngineering(PipelineComponent):
     def __init__(self):
-        super().__init__("FeatureEngineering")
+        super().__init__("FeatureEngineering", config.MQTT["TOPICS"]["SUBSCRIBE"]["FEATURE_ENGINEERING"],config.MQTT["TOPICS"]["PUBLISH"]["FEATURE_ENGINEERING"])
 
     def setup(self) -> None:
+        super().setup()
         print(f"{self.name}: setup")
 
     def execute(self) -> None:
         print(f"{self.name}: execute")
+
+    def on_message_received(self, payload: dict) -> None:
+        print(f"{self.name}: message received - {payload}")
 
     def teardown(self) -> None:
         print(f"{self.name}: teardown")

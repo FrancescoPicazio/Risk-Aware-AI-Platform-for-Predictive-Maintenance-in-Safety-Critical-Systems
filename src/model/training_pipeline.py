@@ -7,9 +7,10 @@ from src.common.components import PipelineComponent
 
 class TrainingPipeline(PipelineComponent):
     def __init__(self):
-        super().__init__("TrainingPipeline")
+        super().__init__("TrainingPipeline", config.MQTT["TOPICS"]["SUBSCRIBE"]["TRAINING"], config.MQTT["TOPICS"]["PUBLISH"]["TRAINING"])
 
     def setup(self) -> None:
+        super().setup()
         print(f"{self.name}: setup")
 
     def execute(self) -> None:
@@ -42,7 +43,7 @@ if __name__ == "__main__":
         while True:
             training.execute()
             logger.info("✅ Training completed")
-            time.sleep(config.TRAINING_TIME_INTERVAL)
+            time.sleep(config.TIMERS["TRAINING_SCHEDULE"])
     except KeyboardInterrupt:
         training.teardown()
         logger.info("🛑 Training stopped")

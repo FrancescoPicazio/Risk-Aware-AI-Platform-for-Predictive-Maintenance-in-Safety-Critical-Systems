@@ -5,7 +5,7 @@ Handles loading and preprocessing of NASA C-MAPSS turbofan engine dataset
 
 import pandas as pd
 from pathlib import Path
-from typing import Tuple, Dict, List
+from typing import Tuple, Dict
 
 
 class CMAPSSDataLoader:

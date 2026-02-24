@@ -1,48 +1,45 @@
+import time
+
 from src.common.components import PipelineComponent
+
+from configs import config
 
 
 class DataIngestion(PipelineComponent):
+    _payload = None
+
     def __init__(self):
-        super().__init__("DataIngestion")
+        super().__init__("DataIngestion", [config.MQTT["TOPICS"]["SCHEDULER"]])
 
     def setup(self) -> None:
+        super().setup()
         print(f"{self.name}: setup")
 
     def execute(self) -> None:
-        print(f"{self.name}: execute")
+        if not self._payload:
+            return
+
+        print(f"{self.name}: processing payload - {self._payload}")
+        payload = self._payload.copy()
+        self._payload = None
+        print(f"{self.name}: execute payload - {payload}")
+        self.send_message(config.MQTT["TOPICS"]["FEATURE_ENGINEERING"], payload)
+
+    def on_message_received(self, payload: dict) -> None:
+        print(f"{self.name}: message received - {payload}")
+        self._payload = payload
 
     def teardown(self) -> None:
         print(f"{self.name}: teardown")
 
 
 if __name__ == "__main__":
-    import logging
-    import time
-    import os
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
-    logger = logging.getLogger(__name__)
-
-    # Container startup banner
-    print("\n" + "="*60)
-    print("📥 [DATA INGESTION CONTAINER ONLINE]")
-    print("="*60)
-    logger.info(f"MQTT Broker: {os.getenv('MQTT_BROKER', 'mqtt-broker')}")
-    logger.info(f"Input Topic: {os.getenv('INPUT_TOPIC', 'raw/sensors')}")
-    logger.info(f"Output Topic: {os.getenv('OUTPUT_TOPIC', 'validated/data')}")
-    print("="*60 + "\n")
-
     ingestion = DataIngestion()
     ingestion.setup()
 
     try:
         while True:
             ingestion.execute()
-            time.sleep(60)
     except KeyboardInterrupt:
         ingestion.teardown()
-        logger.info("🛑 Data Ingestion stopped")
 

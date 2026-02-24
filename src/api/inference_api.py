@@ -3,9 +3,9 @@ Inference API
 FastAPI service for RUL prediction and risk assessment
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import Dict, Any, Optional
+from typing import Dict, Optional
 import logging
 import os
 

@@ -8,9 +8,10 @@ from src.common.components import PipelineComponent
 
 class Monitoring(PipelineComponent):
     def __init__(self):
-        super().__init__("Monitoring")
+        super().__init__("Monitoring", config.MQTT["TOPICS"]["MONITORING"])
 
     def setup(self) -> None:
+        super().setup()
         print(f"{self.name}: setup")
 
     def execute(self) -> None:
@@ -41,7 +42,7 @@ if __name__ == "__main__":
     try:
         while True:
             monitoring.execute()
-            time.sleep(config.MONITORING_TIME_INTERVAL)
+            time.sleep(config.TIMERS["MONITORING_SCHEDULE"])
     except KeyboardInterrupt:
         monitoring.teardown()
         logger.info("🛑 Monitoring stopped")

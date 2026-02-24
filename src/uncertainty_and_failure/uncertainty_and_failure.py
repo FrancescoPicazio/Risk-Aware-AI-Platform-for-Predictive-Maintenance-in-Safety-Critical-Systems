@@ -1,11 +1,12 @@
 from src.common.components import PipelineComponent
-
+from configs import config
 
 class UncertaintyAndFailure(PipelineComponent):
     def __init__(self):
-        super().__init__("UncertaintyAndFailure")
+        super().__init__("UncertaintyAndFailure", config.MQTT["TOPICS"]["UNCERTAINTY_AND_FAILURE"])
 
     def setup(self) -> None:
+        super().setup()
         print(f"{self.name}: setup")
 
     def execute(self) -> None:

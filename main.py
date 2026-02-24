@@ -37,13 +37,13 @@ def main():
 
     # Configure and start scheduler
     logger.info("Configuring local pipeline...")
-    scheduler.schedule_pipeline(
-        [streaming, training_pipeline, monitoring]
-    )
 
     logger.info("Starting local pipeline...")
     try:
         scheduler.start()
+        streaming.start()
+        training_pipeline.start()
+        monitoring.start()
     except KeyboardInterrupt:
         logger.info("\nLocal pipeline interrupted by user")
         print("\n" + "="*70)
