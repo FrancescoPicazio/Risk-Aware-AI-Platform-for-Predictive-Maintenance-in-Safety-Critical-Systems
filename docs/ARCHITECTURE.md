@@ -76,6 +76,7 @@ flowchart TB
   api --> mon
   mon <--> results
   fe --> proc
+  proc --> train
   train --> artifacts
   train --> results
   mon --> metrics
