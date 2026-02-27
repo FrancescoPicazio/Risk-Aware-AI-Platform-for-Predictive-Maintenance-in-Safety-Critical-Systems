@@ -1,0 +1,49 @@
+# Git attributes for consistent line endings across platforms
+# This ensures that line endings are consistent regardless of OS
+
+* text=auto
+
+# Source code
+*.py text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+*.rst text eol=lf
+
+# Configuration
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.cfg text eol=lf
+*.ini text eol=lf
+*.conf text eol=lf
+
+# Docker
+Dockerfile* text eol=lf
+docker-compose.yml text eol=lf
+.dockerignore text eol=lf
+
+# Binary files (no line ending conversion)
+*.pkl binary
+*.pickle binary
+*.pyc binary
+*.so binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.pdf binary
+
+# Git-specific
+.gitignore text eol=lf
+.gitattributes text eol=lf
+

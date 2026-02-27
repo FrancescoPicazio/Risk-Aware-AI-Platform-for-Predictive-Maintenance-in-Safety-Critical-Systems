@@ -16,14 +16,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Container startup banner
-print("\n" + "="*60)
-print("🔌 [INFERENCE API CONTAINER ONLINE]")
-print("="*60)
-logger.info(f"MQTT Broker: {os.getenv('MQTT_BROKER', 'mqtt-broker')}")
-logger.info(f"Model Path: {os.getenv('MODEL_PATH', '/app/data/model_artifacts')}")
-logger.info("API will be available on port 8000")
-print("="*60 + "\n")
 
 # Create FastAPI app
 app = FastAPI(

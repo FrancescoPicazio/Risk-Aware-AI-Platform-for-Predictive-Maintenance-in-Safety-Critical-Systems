@@ -3,7 +3,7 @@ from configs import config
 
 class UncertaintyAndFailure(PipelineComponent):
     def __init__(self):
-        super().__init__("UncertaintyAndFailure", config.MQTT["TOPICS"]["UNCERTAINTY_AND_FAILURE"])
+        super().__init__("UncertaintyAndFailure", [config.MQTT["TOPICS"]["RISK_AND_COST"]])
 
     def setup(self) -> None:
         super().setup()
@@ -14,6 +14,9 @@ class UncertaintyAndFailure(PipelineComponent):
 
     def teardown(self) -> None:
         print(f"{self.name}: teardown")
+
+    def on_message_received(self, payload: dict) -> None:
+        print(f"{self.name}: received message - {payload}")
 
 
 if __name__ == "__main__":

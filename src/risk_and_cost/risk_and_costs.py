@@ -6,7 +6,7 @@ from configs import config
 
 class RiskAndCosts(PipelineComponent):
     def __init__(self):
-        super().__init__("RiskAndCosts", config.MQTT["TOPICS"]["RISK_AND_COSTS"])
+        super().__init__("RiskAndCosts", [config.MQTT["TOPICS"]["UNCERTAINTY_AND_FAILURE"]])
 
     def setup(self) -> None:
         super().setup()
@@ -17,6 +17,9 @@ class RiskAndCosts(PipelineComponent):
 
     def teardown(self) -> None:
         print(f"{self.name}: teardown")
+
+    def on_message_received(self, payload: dict) -> None:
+        print(f"{self.name}: received message - {payload}")
 
 
 if __name__ == "__main__":

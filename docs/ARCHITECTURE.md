@@ -50,47 +50,52 @@ flowchart TB
     ingest["📥 Data Ingestion"]
     fe["⚙️ Feature Engineering"]
     train["🧠 Training Pipeline"]
+    
+    sched["⏱️ Scheduler"]
+  end
+  
+    
+  subgraph Interfaces[Risk-Aware Prognostics Platform Interfaces]
     uq["📊 Uncertainty + Failure"]
     risk["⚠️ Risk & Cost Engine"]
     api["🔌 Inference API"]
     mon["📈 Monitoring + Drift"]
-    sched["⏱️ Scheduler"]
+  end
+  
+  subgraph Data[Risk-Aware Prognostics Platform DB]
+    raw[(data/raw)]
+    proc[(data/processed)]
+    artifacts[(data/model_artifacts)]
+    results[(data/metrics_and_results)]
   end
 
-  raw[(data/raw)]
-  proc[(data/processed)]
-  artifacts[(data/model_artifacts)]
-  metrics[(data/metrics)]
-  results[(data/results)]
 
   raw --> sim
   sim --> ingest
   ingest --> fe
   fe --> train
-  train --> uq
-  uq --> risk
+  fe --> proc
   risk <--> results
   uq <--> results
-  risk --> api
   api <--> results
-  api --> mon
   mon <--> results
-  fe --> proc
   proc --> train
-  train --> artifacts
+  train <--> artifacts
   train --> results
-  mon --> metrics
   sched --> sim
   sched --> train
   sched --> mon
 
+  linkStyle 1,2,3 stroke:#DB00DB,stroke-width:2px
+  linkStyle 0,4,5,6,7,8,9,10,11 stroke:#4C9AD9,stroke-width:2px
+
   %% Colori frecce
-  linkStyle 1,2,3,4,5,8,10 stroke:#DB00DB,stroke-width:2px
-  linkStyle 0,6,7,9,11,12,13,14,15 stroke:#4C9AD9,stroke-width:2px
 ```
 
+
+
 **Legenda frecce:**
-- ⚪ **White**: Scheduler
+- ⚪ **White**: Scheduler (Trigger via MQTT)
 - 🟣 **Violet**: MQTT
 - 🔵 **Blue**: Data flow
 

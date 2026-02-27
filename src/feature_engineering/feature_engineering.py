@@ -3,7 +3,7 @@ from configs import config
 
 class FeatureEngineering(PipelineComponent):
     def __init__(self):
-        super().__init__("FeatureEngineering", config.MQTT["TOPICS"]["SUBSCRIBE"]["FEATURE_ENGINEERING"],config.MQTT["TOPICS"]["PUBLISH"]["FEATURE_ENGINEERING"])
+        super().__init__("FeatureEngineering",[config.MQTT["TOPICS"]["DATA_INGESTION"]])
 
     def setup(self) -> None:
         super().setup()
