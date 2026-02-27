@@ -125,8 +125,7 @@ Risk-Aware-AI-Platform/
 ├── docs/                          # Documentation
 │   ├── ARCHITECTURE.md            # System architecture (C4 model)
 │   ├── REQUIREMENTS_AND_KPI.md    # Requirements and KPIs
-│   ├── DATASET.md                 # Dataset documentation
-│   └── TASKS.md                   # Task breakdown
+│   └── DATASET.md                 # Dataset documentation
 ├── src/                           # Source code
 │   ├── streaming/                 # Data streaming simulator
 │   ├── data_ingestion/            # Data ingestion layer
@@ -606,8 +605,6 @@ Current status and upcoming features:
   - Automated retraining triggers
   - Full test coverage
 
-For detailed roadmap, see:
-- ✅ **[TASKS.md](docs/TASKS.md)** – Task breakdown with checkboxes
 
 ---
 pip install -r requirements.txt
