@@ -124,10 +124,8 @@ Risk-Aware-AI-Platform/
 │   └── README.md                  # Docker deployment guide
 ├── docs/                          # Documentation
 │   ├── ARCHITECTURE.md            # System architecture (C4 model)
-│   ├── ADR.md                     # Architecture Decision Records
 │   ├── REQUIREMENTS_AND_KPI.md    # Requirements and KPIs
 │   ├── DATASET.md                 # Dataset documentation
-│   ├── ROADMAP.md                 # Development roadmap
 │   └── TASKS.md                   # Task breakdown
 ├── src/                           # Source code
 │   ├── streaming/                 # Data streaming simulator
@@ -163,7 +161,6 @@ Risk-Aware Decision Engine → Economic Optimization → Inference API
 
 For a detailed architectural breakdown, see:
 - 📐 **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** – Complete system design and component details
-- 📋 **[ADR.md](docs/ADR.md)** – Architecture Decision Records
 
 ---
 
@@ -610,7 +607,6 @@ Current status and upcoming features:
   - Full test coverage
 
 For detailed roadmap, see:
-- 🗺️ **[ROADMAP.md](docs/ROADMAP.md)** – Development timeline
 - ✅ **[TASKS.md](docs/TASKS.md)** – Task breakdown with checkboxes
 
 ---
@@ -636,7 +632,6 @@ Risk-Aware-AI-Platform/
 ├── data/                          # CMAPSS dataset files
 ├── docs/                          # Documentation
 │   ├── ARCHITECTURE.md           # System architecture design
-│   ├── ADR.md                    # Architecture Decision Records
 │   ├── REQUIREMENTS_AND_KPI.md   # Key Performance Indicators and requirements
 │   └── DATASET.md                # Dataset documentation
 │
@@ -662,7 +657,6 @@ Risk-Aware-AI-Platform/
 ## 📄 Documentation
 
 - 📐 **[Architecture](docs/ARCHITECTURE.md)** – Complete system design
-- 📋 **[ADR](docs/ADR.md)** – Decision records and rationale
 - 📈 **[KPI](docs/REQUIREMENTS_AND_KPI.md)** – Performance metrics framework
 - 📊 **[Dataset](docs/DATASET.md)** – Data description and preprocessing
 
@@ -748,7 +742,6 @@ Motore Decisionale Risk-Aware → Ottimizzazione Economica → API di Inferenza
 
 Per una descrizione architettonica dettagliata, vedi:
 - 📐 **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** – Design completo del sistema e dettagli dei componenti
-- 📋 **[ADR.md](docs/ADR.md)** – Architecture Decision Records
 
 ---
 
@@ -856,7 +849,6 @@ Risk-Aware-AI-Platform/
 ├── data/                          # File dataset CMAPSS
 ├── docs/                          # Documentazione
 │   ├── ARCHITECTURE.md           # Design architettura sistema
-│   ├── ADR.md                    # Architecture Decision Records
 │   ├── REQUIREMENTS_AND_KPI.md   # Indicatori Chiave di Performance e requisiti
 │   └── DATASET.md                # Documentazione dataset
 │
@@ -893,7 +885,6 @@ Questo progetto rappresenta un **approccio production-first** all'AI in sistemi 
 ## 📄 Documentazione
 
 - 📐 **[Architettura](docs/ARCHITECTURE.md)** – Design completo del sistema
-- 📋 **[ADR](docs/ADR.md)** – Record delle decisioni e razionale
 - 📈 **[KPI](docs/REQUIREMENTS_AND_KPI.md)** – Framework metriche di performance
 - 📊 **[Dataset](docs/DATASET.md)** – Descrizione dati e preprocessing
 
