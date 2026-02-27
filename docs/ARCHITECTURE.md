@@ -47,21 +47,21 @@ flowchart LR
 flowchart TB
     subgraph Platform[Risk-Aware Prognostics Platform]
 
-        subgraph Data[Risk-Aware Prognostics Platform DB]
+        subgraph Data[DataBases]
           raw[(data/raw)]
           proc[(data/processed)]
           artifacts[(data/model_artifacts)]
           results[(data/metrics_and_results)]
         end
           
-        subgraph Interfaces[Risk-Aware Prognostics Platform Interfaces]
+        subgraph Interfaces[Interfaces]
           uq["📊 Uncertainty + Failure"]
           risk["⚠️ Risk & Cost Engine"]
           api["🔌 Inference API"]
           mon["📈 Monitoring + Drift"]
         end
         
-        subgraph Pipeline[Risk-Aware Prognostics Platform]
+        subgraph Pipeline[Pipelines]
           sim["🎬 Streaming Simulator"]
           ingest["📥 Data Ingestion"]
           fe["⚙️ Feature Engineering"]
