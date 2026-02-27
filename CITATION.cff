@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "Risk-Aware AI Platform for Predictive Maintenance in Safety-Critical Systems"
+authors:
+  - family-names: "Picazio"
+    given-names: "Francesco"
+date-released: 2026-02-27
+license: MIT
+repository-code: "https://github.com/FrancescoPicazio/Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems"
+type: software
+version: 0.1.0
+keywords:
+  - "Predictive Maintenance"
+  - "Remaining Useful Life"
+  - "Uncertainty Quantification"
+  - "Risk-Aware AI"
+  - "Safety-Critical Systems"
+  - "Machine Learning"
+description: >-
+  An end-to-end AI lifecycle architecture for safety-critical predictive
+  maintenance systems. Transforms raw degradation signals into RUL estimates,
+  uncertainty-aware failure probabilities, risk-adjusted decisions, and
+  economic optimization outputs.
+message: "If you use this software, please cite it using these metadata."
