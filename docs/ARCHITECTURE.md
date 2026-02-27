@@ -45,30 +45,31 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  subgraph Platform[Risk-Aware Prognostics Platform]
-    sim["🎬 Streaming Simulator"]
-    ingest["📥 Data Ingestion"]
-    fe["⚙️ Feature Engineering"]
-    train["🧠 Training Pipeline"]
-    
-    sched["⏱️ Scheduler"]
-  end
-  
-    
-  subgraph Interfaces[Risk-Aware Prognostics Platform Interfaces]
-    uq["📊 Uncertainty + Failure"]
-    risk["⚠️ Risk & Cost Engine"]
-    api["🔌 Inference API"]
-    mon["📈 Monitoring + Drift"]
-  end
-  
-  subgraph Data[Risk-Aware Prognostics Platform DB]
-    raw[(data/raw)]
-    proc[(data/processed)]
-    artifacts[(data/model_artifacts)]
-    results[(data/metrics_and_results)]
-  end
+    subgraph Platform[Risk-Aware Prognostics Platform]
 
+        subgraph Data[Risk-Aware Prognostics Platform DB]
+          raw[(data/raw)]
+          proc[(data/processed)]
+          artifacts[(data/model_artifacts)]
+          results[(data/metrics_and_results)]
+        end
+          
+        subgraph Interfaces[Risk-Aware Prognostics Platform Interfaces]
+          uq["📊 Uncertainty + Failure"]
+          risk["⚠️ Risk & Cost Engine"]
+          api["🔌 Inference API"]
+          mon["📈 Monitoring + Drift"]
+        end
+        
+        subgraph Pipeline[Risk-Aware Prognostics Platform]
+          sim["🎬 Streaming Simulator"]
+          ingest["📥 Data Ingestion"]
+          fe["⚙️ Feature Engineering"]
+          train["🧠 Training Pipeline"]
+          sched["⏱️ Scheduler"]
+        end
+
+ end
 
   raw --> sim
   sim --> ingest
