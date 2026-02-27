@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="81eb3cbf-ebf1-419b-a748-28ff1586a597" name="Changes" comment="Refactor streaming execution to handle concurrent triggers and improve error logging" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/picaz/PycharmProjects/Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems" value="39pwnIbnzyW0VBcRcilAM6ttixo" />
+    </persistenceIdMap>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;FrancescoPicazio&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/FrancescoPicazio/Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems.git&quot;,
+    &quot;accountId&quot;: &quot;02c522e1-a6d4-4b40-8364-d46621a7bbd8&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="39pwnIbnzyW0VBcRcilAM6ttixo" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.docker.mqtt-broker: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.scheduler.executor&quot;: &quot;Run&quot;,
+    &quot;Python.streaming.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\picaz\PycharmProjects\Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems\config" />
+      <recent name="C:\Users\picaz\PycharmProjects\Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems\docs" />
+      <recent name="C:\Users\picaz\PycharmProjects\Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems\src\streaming" />
+      <recent name="C:\Users\picaz\PycharmProjects\Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems\src\scheduler" />
+      <recent name="C:\Users\picaz\PycharmProjects\Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems\src\uncertainty_and_failure" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.scheduler">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python">
+      <module name="Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.10 (Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scheduler" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.10 (Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems)" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\picaz\PycharmProjects\Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/scheduler/scheduler.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="streaming" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.10 (Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems)" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\picaz\PycharmProjects\Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/streaming/streaming.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Docker Build" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="false" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/manage.ps1" />
+      <option name="SCRIPT_OPTIONS" value="build" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="false" />
+      <option name="INTERPRETER_PATH" value="&quot;$PROJECT_DIR$/../../../../Windows/System32/WindowsPowerShell/v1.0/powershell.exe&quot;" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="true" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker.mqtt-broker: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="envFilePath" value="" />
+          <option name="envFilePaths">
+            <list>
+              <option value="" />
+            </list>
+          </option>
+          <option name="services">
+            <list>
+              <option value="mqtt-broker" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker/docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Docker.docker.mqtt-broker: Compose Deployment" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.scheduler" />
+      <item itemvalue="Python.streaming" />
+      <item itemvalue="Shell Script.Docker Build" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.docker.mqtt-broker: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-2653e85de345-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.31033.139" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="81eb3cbf-ebf1-419b-a748-28ff1586a597" name="Changes" comment="" />
+      <created>1771406485439</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1771406485439</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Project setting up">
+      <option name="closed" value="true" />
+      <created>1771410596720</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1771410596720</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Dataset analysis and .md updates">
+      <option name="closed" value="true" />
+      <created>1771421682310</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1771421682310</updated>
+    </task>
+    <task id="LOCAL-00003" summary="FIx README.md / removed roadmap">
+      <option name="closed" value="true" />
+      <created>1771421838257</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1771421838257</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Rename data files and add roadmap and requirements documentation">
+      <option name="closed" value="true" />
+      <created>1771687437702</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1771687437702</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Enhance architecture documentation with emoji labels for clarity">
+      <option name="closed" value="true" />
+      <created>1771687938322</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1771687938322</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add new pipeline components and rename data loader module">
+      <option name="closed" value="true" />
+      <created>1771692987143</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1771692987143</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Refactor container structure and update imports for consistency">
+      <option name="closed" value="true" />
+      <created>1771852195565</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1771852195565</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Add Docker configuration files and initial service implementations">
+      <option name="closed" value="true" />
+      <created>1771855787734</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1771855787734</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Add Docker configuration files and initial service implementations">
+      <option name="closed" value="true" />
+      <created>1771855984705</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1771855984705</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Add deployment architecture documentation for Docker-based microservices with MQTT">
+      <option name="closed" value="true" />
+      <created>1771856172747</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1771856172747</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Update time intervals in config and refactor volume paths in Docker setup">
+      <option name="closed" value="true" />
+      <created>1771861932939</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1771861932939</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Refactor time intervals in config, enhance MQTT integration, and improve data file validation in streaming component">
+      <option name="closed" value="true" />
+      <created>1771925961468</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1771925961468</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Enhance MQTT integration in pipeline components, improve data validation, and refactor configuration structure">
+      <option name="closed" value="true" />
+      <created>1771951916797</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1771951916797</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Refactor streaming execution to handle concurrent triggers and improve error logging">
+      <option name="closed" value="true" />
+      <created>1771952142541</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1771952142541</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Project setting up" />
+    <MESSAGE value="Dataset analysis and .md updates" />
+    <MESSAGE value="FIx README.md / removed roadmap" />
+    <MESSAGE value="Rename data files and add roadmap and requirements documentation" />
+    <MESSAGE value="Enhance architecture documentation with emoji labels for clarity" />
+    <MESSAGE value="Add pipeline components for streaming, data ingestion, training, monitoring, and scheduling" />
+    <MESSAGE value="Add new pipeline components and rename data loader module" />
+    <MESSAGE value="Refactor container structure and update imports for consistency" />
+    <MESSAGE value="Add Docker configuration files and initial service implementations" />
+    <MESSAGE value="Add deployment architecture documentation for Docker-based microservices with MQTT" />
+    <MESSAGE value="Update time intervals in config and refactor volume paths in Docker setup" />
+    <MESSAGE value="Refactor time intervals in config, enhance MQTT integration, and improve data file validation in streaming component" />
+    <MESSAGE value="Enhance MQTT integration in pipeline components, improve data validation, and refactor configuration structure" />
+    <MESSAGE value="Refactor streaming execution to handle concurrent triggers and improve error logging" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor streaming execution to handle concurrent triggers and improve error logging" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
