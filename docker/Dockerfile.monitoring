@@ -19,8 +19,8 @@ COPY src/monitoring/ ./src/monitoring/
 COPY src/common/ ./src/common/
 COPY configs/ ./configs/
 
-# Create directories for metrics and logs
-RUN mkdir -p /app/data/metrics /app/logs
+# Create directories for metrics, results and logs
+RUN mkdir -p /app/data/metrics /app/data/results /app/logs
 
 # Start command
 CMD ["python", "-m", "src.monitoring.monitoring"]

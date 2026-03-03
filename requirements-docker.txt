@@ -44,6 +44,9 @@ statsmodels>=0.14.0
 croniter~=6.0.0
 python-dateutil~=2.9.0.post0
 
+# Parquet I/O (required by Feature Engineering and Training Pipeline)
+pyarrow>=14.0.0
+
 # NOTE: PyTorch will be installed separately with --index-url flag
 # to use CPU-only version (much lighter for Docker builds)
 

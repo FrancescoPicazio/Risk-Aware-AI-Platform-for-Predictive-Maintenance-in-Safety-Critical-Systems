@@ -11,7 +11,6 @@ services:
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
-      - OUTPUT_TOPIC=raw/sensors
       - SIMULATION_SPEED=1.0
     volumes:
       - ../data/raw:/app/data/raw
@@ -53,8 +52,6 @@ services:
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
-      - INPUT_TOPIC=raw/sensors
-      - OUTPUT_TOPIC=validated/data
     volumes:
       - ../data/raw:/app/data/raw
       - ../logs:/app/logs
@@ -73,8 +70,6 @@ services:
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
-      - INPUT_TOPIC=validated/data
-      - OUTPUT_TOPIC=processed/features
     volumes:
       - ../data/processed:/app/data/processed
       - ../configs:/app/configs:ro
@@ -89,17 +84,22 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.training
     container_name: risk-aware-training
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
     environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
       - MODEL_OUTPUT_PATH=/app/data/model_artifacts
     volumes:
-      - ../data/processed:/app/data/processed:ro
+      - ../data/processed:/app/data/processed
       - ../data/model_artifacts:/app/data/model_artifacts
       - ../data/results:/app/data/results
       - ../configs:/app/configs:ro
       - ../logs:/app/logs
     networks:
       - risk-aware-network
-    restart: "no"  # Eseguito manualmente o via scheduler
+    restart: unless-stopped
 
   # Uncertainty + Failure
   uncertainty:
@@ -112,8 +112,6 @@ services:
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
-      - INPUT_TOPIC=predictions/rul
-      - OUTPUT_TOPIC=predictions/uncertainty
       - MODEL_PATH=/app/data/model_artifacts
     volumes:
       - ../data/model_artifacts:/app/data/model_artifacts:ro
@@ -134,8 +132,6 @@ services:
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
-      - INPUT_TOPIC=predictions/uncertainty
-      - OUTPUT_TOPIC=decisions/risk
     volumes:
       - ../data/results:/app/data/results
       - ../configs:/app/configs:ro
@@ -181,7 +177,7 @@ services:
       - METRICS_TOPIC=monitoring/metrics
     volumes:
       - ../data/metrics:/app/data/metrics
-      - ../data/results:/app/data/results:ro
+      - ../data/results:/app/data/results
       - ../logs:/app/logs
     networks:
       - risk-aware-network

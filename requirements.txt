@@ -55,3 +55,6 @@ croniter~=6.0.0
 python-dateutil~=2.9.0.post0
 matplotlib~=3.10.8
 seaborn~=0.13.2
+
+# Parquet I/O (required by Feature Engineering to persist processed data)
+pyarrow>=14.0.0

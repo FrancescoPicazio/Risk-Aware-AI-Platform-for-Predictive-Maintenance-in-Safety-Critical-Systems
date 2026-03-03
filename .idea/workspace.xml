@@ -4,7 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="81eb3cbf-ebf1-419b-a748-28ff1586a597" name="Changes" comment="Refactor streaming execution to handle concurrent triggers and improve error logging" />
+    <list default="true" id="81eb3cbf-ebf1-419b-a748-28ff1586a597" name="Changes" comment="refactor: update architecture diagram for better terminology and clarity">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_02_2026_14_47__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/configs/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/Dockerfile.feature_engineering" beforeDir="false" afterPath="$PROJECT_DIR$/docker/Dockerfile.feature_engineering" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/Dockerfile.monitoring" beforeDir="false" afterPath="$PROJECT_DIR$/docker/Dockerfile.monitoring" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/Dockerfile.training" beforeDir="false" afterPath="$PROJECT_DIR$/docker/Dockerfile.training" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements-docker.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-docker.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data_ingestion/data_ingestion.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_ingestion/data_ingestion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/feature_engineering/feature_engineering.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/feature_engineering/feature_engineering.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/model_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/model_engine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/training_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/training_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/monitoring/monitoring.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/monitoring/monitoring.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/risk_and_cost/risk_and_costs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/risk_and_cost/risk_and_costs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uncertainty_and_failure/uncertainty_and_failure.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uncertainty_and_failure/uncertainty_and_failure.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +32,12 @@
     <persistenceIdMap>
       <entry key="_C:/Users/picaz/PycharmProjects/Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems" value="39pwnIbnzyW0VBcRcilAM6ttixo" />
     </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedModel">
+    <selectedModels>
+      <entry key="chat-panel" value="Claude Sonnet 4.6" />
+      <entry key="agent-panel" value="Claude Sonnet 4.6" />
+    </selectedModels>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -48,22 +72,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.docker.mqtt-broker: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.scheduler.executor&quot;: &quot;Run&quot;,
-    &quot;Python.streaming.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Docker.docker.mqtt-broker: Compose Deployment.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
+    "Python.scheduler.executor": "Run",
+    "Python.streaming.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "git-widget-placeholder": "main",
+    "run.code.analysis.last.selected.profile": "aDefault",
+    "settings.editor.selected.configurable": "advanced.settings"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\picaz\PycharmProjects\Risk-Aware-AI-Platform-for-Predictive-Maintenance-in-Safety-Critical-Systems\config" />
@@ -326,7 +351,47 @@
       <option name="project" value="LOCAL" />
       <updated>1771952142541</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="docs: remove reference to TASKS.md from README">
+      <option name="closed" value="true" />
+      <created>1772200517352</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1772200517353</updated>
+    </task>
+    <task id="LOCAL-00016" summary="docs: add bug report and feature request templates">
+      <option name="closed" value="true" />
+      <created>1772202771450</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1772202771450</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat: add environment configuration example and update MQTT topics in pipeline components">
+      <option name="closed" value="true" />
+      <created>1772207972869</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1772207972869</updated>
+    </task>
+    <task id="LOCAL-00018" summary="refactor: reorganize architecture diagram for improved clarity">
+      <option name="closed" value="true" />
+      <created>1772209082670</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1772209082670</updated>
+    </task>
+    <task id="LOCAL-00019" summary="refactor: update architecture diagram for better terminology and clarity">
+      <option name="closed" value="true" />
+      <created>1772209219255</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1772209219255</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -355,7 +420,12 @@
     <MESSAGE value="Refactor time intervals in config, enhance MQTT integration, and improve data file validation in streaming component" />
     <MESSAGE value="Enhance MQTT integration in pipeline components, improve data validation, and refactor configuration structure" />
     <MESSAGE value="Refactor streaming execution to handle concurrent triggers and improve error logging" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor streaming execution to handle concurrent triggers and improve error logging" />
+    <MESSAGE value="docs: remove reference to TASKS.md from README" />
+    <MESSAGE value="docs: add bug report and feature request templates" />
+    <MESSAGE value="feat: add environment configuration example and update MQTT topics in pipeline components" />
+    <MESSAGE value="refactor: reorganize architecture diagram for improved clarity" />
+    <MESSAGE value="refactor: update architecture diagram for better terminology and clarity" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: update architecture diagram for better terminology and clarity" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

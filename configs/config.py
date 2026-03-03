@@ -1,14 +1,9 @@
-#STREAMING_TIME_INTERVAL = 0.1 #s
-#TRAINING_TIME_INTERVAL = 86400 #s - 24 hours
-#MONITORING_TIME_INTERVAL = 86400 #s - 24 hours
-
-#DATA_PATH = "data/raw"
-
 DATA = {
     "RAW": "data/raw",
     "PROCESSED": "data/processed",
-    "MODELS": "data/models",
-    "METRICS": "data/metrics"
+    "MODEL_ARTIFACTS": "data/model_artifacts",
+    "METRICS": "data/metrics",
+    "RESULTS": "data/results"
 }
 
 TIMERS = {
