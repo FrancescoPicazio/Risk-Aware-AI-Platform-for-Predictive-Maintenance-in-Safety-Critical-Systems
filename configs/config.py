@@ -3,7 +3,8 @@ DATA = {
     "PROCESSED": "data/processed",
     "MODEL_ARTIFACTS": "data/model_artifacts",
     "METRICS": "data/metrics",
-    "RESULTS": "data/results"
+    "RESULTS": "data/results",
+    "METRICS_AND_RESULTS": "data/metrics_and_results"
 }
 
 TIMERS = {
@@ -25,7 +26,10 @@ MQTT = {
         "FEATURE_ENGINEERING": "cmapss/feature_engineering",
         "TRAINING": "cmapss/training",
         "UNCERTAINTY_AND_FAILURE": "cmapss/uncertainty_failure",
+        "UNCERTAINTY": "cmapss/uncertainty",
+        "RISK": "cmapss/risk",
         "RISK_AND_COST": "cmapss/risk_cost",
+        "ECONOMIC": "cmapss/economic",
         "INFERENCE": "cmapss/inference",
         "MONITORING": "cmapss/monitoring"
     },

@@ -166,7 +166,7 @@ class TrainingPipeline(PipelineComponent):
                 f"RUL={result['rul_mean']:.1f} ± {result['rul_std']:.1f} "
                 f"[{result['rul_lower']:.1f}, {result['rul_upper']:.1f}]"
             )
-            # Publish prediction to inference topic
+            # Publish prediction to inference topic (picked up by Monitoring)
             self.send_message(config.MQTT["TOPICS"]["INFERENCE"], {
                 "type": "RUL_PREDICTION",
                 "unit_id": unit_id,
@@ -176,6 +176,16 @@ class TrainingPipeline(PipelineComponent):
                 "rul_upper": result["rul_upper"],
                 "timestamp": time.time(),
             })
+            # GAP-5: trigger UQ for the dataset(s) this unit belongs to
+            dataset_ids = self._get_dataset_ids_for_unit(unit_id)
+            for dataset_id in dataset_ids:
+                self.send_message(config.MQTT["TOPICS"]["UNCERTAINTY"], {
+                    "type": "UQ_REQUEST",
+                    "dataset_id": dataset_id,
+                    "trigger": "post_inference",
+                    "unit_id": unit_id,
+                    "timestamp": time.time(),
+                })
         except Exception as exc:
             self.logger.error(
                 f"{self.name}: inference failed for unit {unit_id} – {exc}"
@@ -231,6 +241,36 @@ class TrainingPipeline(PipelineComponent):
         if not frames:
             return None
         return pd.concat(frames, ignore_index=True)
+
+    def _get_available_dataset_ids(self) -> list:
+        """
+        Return a sorted list of dataset_id strings present in data/processed.
+        Each immediate sub-directory of processed/ is treated as a dataset_id
+        (e.g. 'train_FD001', 'test_FD001').
+        """
+        processed_dir = Path(config.DATA["PROCESSED"])
+        if not processed_dir.exists():
+            return []
+        return sorted(
+            d.name for d in processed_dir.iterdir()
+            if d.is_dir() and list(d.glob("*.parquet"))
+        )
+
+    def _get_dataset_ids_for_unit(self, unit_id: Optional[int]) -> list:
+        """
+        Return dataset_ids (sub-directory names) that contain a parquet file
+        for the given unit_id.
+        """
+        if unit_id is None:
+            return self._get_available_dataset_ids()
+        processed_dir = Path(config.DATA["PROCESSED"])
+        if not processed_dir.exists():
+            return []
+        pattern = f"unit_{unit_id:04d}.parquet"
+        return sorted(
+            d.name for d in processed_dir.iterdir()
+            if d.is_dir() and (d / pattern).exists()
+        )
 
     def teardown(self) -> None:
         super().teardown()

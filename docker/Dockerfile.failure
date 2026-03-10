@@ -11,28 +11,24 @@ RUN apt-get update && apt-get install -y \
 # Copy requirements
 COPY requirements-docker.txt .
 
-# Install Python packages with increased timeout and CPU-only PyTorch
+# Install Python packages (scipy required for Weibull fit)
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --default-timeout=300 --no-cache-dir -r requirements-docker.txt && \
-    pip install --default-timeout=300 --no-cache-dir \
-        torch --index-url https://download.pytorch.org/whl/cpu
+    pip install --no-cache-dir scipy>=1.11.0
 
 # Copy source code
 COPY src/uncertainty_and_failure/ ./src/uncertainty_and_failure/
-COPY src/model/ ./src/model/
 COPY src/common/ ./src/common/
 COPY configs/ ./configs/
 
-# Create directories for data and logs
-RUN mkdir -p /app/data/results \
-             /app/data/model_artifacts \
-             /app/data/processed \
-             /app/data/raw \
+# Create required data directories
+RUN mkdir -p /app/data/metrics_and_results \
+             /app/data/results \
              /app/logs
 
 # ENV defaults (can be overridden in docker-compose)
-ENV MC_SAMPLES=100
+ENV FIT_WEIBULL=true
 
-# Start the UncertaintyQuantification module
-CMD ["python", "-m", "src.uncertainty_and_failure.uncertainty_quantification"]
+# Start the ProbabilisticFailureModeling module
+CMD ["python", "-m", "src.uncertainty_and_failure.probabilistic_failure_modeling"]
 

@@ -15,7 +15,8 @@ COPY requirements-docker.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --default-timeout=300 --no-cache-dir -r requirements-docker.txt && \
     pip install --default-timeout=300 --no-cache-dir \
-        torch --index-url https://download.pytorch.org/whl/cpu
+        torch --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir pyarrow>=14.0.0
 
 # Copy source code
 COPY src/api/ ./src/api/
@@ -23,14 +24,22 @@ COPY src/model/ ./src/model/
 COPY src/common/ ./src/common/
 COPY configs/ ./configs/
 
-# Create log directory
-RUN mkdir -p /app/logs
+# Create required data and log directories
+RUN mkdir -p /app/data/model_artifacts \
+             /app/data/processed \
+             /app/data/results \
+             /app/data/metrics_and_results \
+             /app/logs
+
+# ENV defaults (can be overridden in docker-compose)
+ENV MC_SAMPLES=100 \
+    MODEL_RELOAD_INTERVAL=300
 
 # Expose API port
 EXPOSE 8000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
 # Start command

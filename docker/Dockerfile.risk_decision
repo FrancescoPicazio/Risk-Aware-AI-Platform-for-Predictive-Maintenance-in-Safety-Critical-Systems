@@ -1,0 +1,34 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements-docker.txt .
+
+# Install Python packages (no PyTorch needed for pure decision logic)
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --default-timeout=300 --no-cache-dir -r requirements-docker.txt
+
+# Copy source code
+COPY src/risk_and_cost/ ./src/risk_and_cost/
+COPY src/common/ ./src/common/
+COPY configs/ ./configs/
+
+# Create required data directories
+RUN mkdir -p /app/data/metrics_and_results \
+             /app/data/results \
+             /app/logs
+
+# ENV defaults – all overridable in docker-compose
+ENV RISK_THRESHOLD=0.7 \
+    SEVERITY_WEIGHT=1.0 \
+    HORIZON_CYCLES=30
+
+# Start the RiskDecisionEngine module
+CMD ["python", "-m", "src.risk_and_cost.risk_decision_engine"]
+

@@ -5,23 +5,48 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements
 COPY requirements-docker.txt .
 
-# Install Python packages with increased timeout (no PyTorch needed)
+# Install Python packages (scipy for KS test, pyarrow for parquet, fastapi for sub-app)
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --default-timeout=300 --no-cache-dir -r requirements-docker.txt
+    pip install --default-timeout=300 --no-cache-dir -r requirements-docker.txt && \
+    pip install --no-cache-dir \
+        scipy>=1.11.0 \
+        pyarrow>=14.0.0 \
+        fastapi>=0.100.0 \
+        "uvicorn[standard]>=0.23.0"
 
 # Copy source code
 COPY src/monitoring/ ./src/monitoring/
 COPY src/common/ ./src/common/
 COPY configs/ ./configs/
 
-# Create directories for metrics, results and logs
-RUN mkdir -p /app/data/metrics /app/data/results /app/logs
+# Create required data directories
+RUN mkdir -p /app/data/metrics \
+             /app/data/results \
+             /app/data/metrics_and_results \
+             /app/data/processed \
+             /app/data/model_artifacts \
+             /app/logs
 
-# Start command
-CMD ["python", "-m", "src.monitoring.monitoring"]
+# ENV defaults – overridable in docker-compose
+ENV DRIFT_THRESHOLD=0.15 \
+    PERF_DELTA_PCT=10.0 \
+    ROLLING_WINDOW=50 \
+    ENABLE_API=true \
+    API_PORT=8001
+
+# Expose monitoring sub-app port
+EXPOSE 8001
+
+# Health check via FastAPI sub-app
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8001/health || exit 1
+
+# Start MonitoringDriftModule (replaces old monitoring.py)
+CMD ["python", "-m", "src.monitoring.monitoring_drift"]
 

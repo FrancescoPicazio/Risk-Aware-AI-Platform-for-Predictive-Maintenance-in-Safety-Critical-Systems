@@ -20,7 +20,7 @@ services:
       - risk-aware-network
     restart: unless-stopped
 
-  # Broker MQTT (infrastruttura)
+  # MQTT Broker (infrastructure)
   mqtt-broker:
     image: eclipse-mosquitto:2.0
     container_name: risk-aware-mqtt
@@ -101,34 +101,108 @@ services:
       - risk-aware-network
     restart: unless-stopped
 
-  # Uncertainty + Failure
+  # Uncertainty Quantification (MC Dropout + Calibration)
   uncertainty:
     build:
       context: ..
       dockerfile: docker/Dockerfile.uncertainty
     container_name: risk-aware-uncertainty
     depends_on:
-      - mqtt-broker
+      mqtt-broker:
+        condition: service_healthy
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
       - MODEL_PATH=/app/data/model_artifacts
+      - MC_SAMPLES=100
+      - INPUT_TOPIC=cmapss/uncertainty
     volumes:
       - ../data/model_artifacts:/app/data/model_artifacts:ro
+      - ../data/processed:/app/data/processed:ro
+      - ../data/raw:/app/data/raw:ro
       - ../data/results:/app/data/results
       - ../logs:/app/logs
     networks:
       - risk-aware-network
     restart: unless-stopped
 
-  # Risk & Cost Engine
+  # Probabilistic Failure Modeling (§4.6 ARCHITECTURE.md)
+  failure-modeling:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.failure
+    container_name: risk-aware-failure-modeling
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - FIT_WEIBULL=true
+    volumes:
+      - ../data/metrics_and_results:/app/data/metrics_and_results
+      - ../data/results:/app/data/results:ro
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # Risk Decision Engine (§4.7 ARCHITECTURE.md)
+  risk-decision:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.risk_decision
+    container_name: risk-aware-risk-decision
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - RISK_THRESHOLD=0.7
+      - SEVERITY_WEIGHT=1.0
+      - HORIZON_CYCLES=30
+    volumes:
+      - ../data/metrics_and_results:/app/data/metrics_and_results
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # Economic Optimization Layer (§4.8 ARCHITECTURE.md)
+  economic-optimization:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.economic
+    container_name: risk-aware-economic-optimization
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - C_EARLY=1000
+      - C_LATE=10000
+      - DOWNTIME_COST=5000
+    volumes:
+      - ../data/metrics_and_results:/app/data/metrics_and_results
+      - ../logs:/app/logs
+    networks:
+      - risk-aware-network
+    restart: unless-stopped
+
+  # Risk & Cost Engine – fast-path bridge
+  # Subscribe: cmapss/inference (RUL_PREDICTION) → Publish: cmapss/risk (RISK_DECISION)
+  # Complements the full UQ pipeline (UncertaintyQuantification → ProbabilisticFailureModeling
+  # → RiskDecisionEngine) by immediately routing streaming inference results to the risk topic.
   risk-engine:
     build:
       context: ..
       dockerfile: docker/Dockerfile.risk_engine
     container_name: risk-aware-risk-engine
     depends_on:
-      - mqtt-broker
+      mqtt-broker:
+        condition: service_healthy
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
@@ -140,50 +214,79 @@ services:
       - risk-aware-network
     restart: unless-stopped
 
-  # Inference API
+  # Inference API (FastAPI – standalone container on port 8000)
   api:
     build:
       context: ..
       dockerfile: docker/Dockerfile.api
     container_name: risk-aware-api
     depends_on:
-      - mqtt-broker
-      - risk-engine
+      mqtt-broker:
+        condition: service_healthy
+      risk-engine:
+        condition: service_started
     ports:
       - "8000:8000"
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
       - MODEL_PATH=/app/data/model_artifacts
+      - RESULTS_DIR=/app/data/results
+      - PROCESSED_DIR=/app/data/processed
+      - MC_SAMPLES=100
+      - MODEL_RELOAD_INTERVAL=300
     volumes:
+      - ../data/processed:/app/data/processed:ro
       - ../data/model_artifacts:/app/data/model_artifacts:ro
       - ../data/results:/app/data/results:ro
       - ../logs:/app/logs
     networks:
       - risk-aware-network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
 
-  # Monitoring + Drift
+  # Monitoring & Drift Detection Module (§4.10 ARCHITECTURE.md)
   monitoring:
     build:
       context: ..
       dockerfile: docker/Dockerfile.monitoring
     container_name: risk-aware-monitoring
     depends_on:
-      - mqtt-broker
+      mqtt-broker:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
     environment:
       - MQTT_BROKER=mqtt-broker
       - MQTT_PORT=1883
-      - METRICS_TOPIC=monitoring/metrics
+      - DRIFT_THRESHOLD=0.15
+      - PERF_DELTA_PCT=10.0
+      - ROLLING_WINDOW=50
+      - ENABLE_API=true
+      - API_PORT=8001
     volumes:
       - ../data/metrics:/app/data/metrics
-      - ../data/results:/app/data/results
+      - ../data/results:/app/data/results:ro
+      - ../data/metrics_and_results:/app/data/metrics_and_results
+      - ../data/processed:/app/data/processed:ro
+      - ../data/model_artifacts:/app/data/model_artifacts
       - ../logs:/app/logs
     networks:
       - risk-aware-network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
 
-  # Scheduler (opzionale - può essere cron esterno)
+  # Scheduler – publishes cron triggers via MQTT (STREAMING, TRAINING, MONITORING)
   scheduler:
     build:
       context: ..
@@ -194,8 +297,8 @@ services:
       - training
       - monitoring
     environment:
-      - TRAINING_SCHEDULE=0 2 * * *  # Ogni giorno alle 2 AM
-      - MONITORING_SCHEDULE=*/15 * * * *  # Ogni 15 minuti
+      - TRAINING_SCHEDULE=0 2 * * *
+      - MONITORING_SCHEDULE=*/15 * * * *
     volumes:
       - ../logs:/app/logs
     networks:

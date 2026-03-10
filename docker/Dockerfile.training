@@ -13,7 +13,7 @@ COPY requirements-docker.txt .
 # Install Python packages with increased timeout and CPU-only PyTorch
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --default-timeout=300 --no-cache-dir -r requirements-docker.txt && \
-    pip install --default-timeout=300 --no-cache-dir pyarrow>=14.0.0 && \
+    pip install --default-timeout=300 --no-cache-dir "pyarrow>=14.0.0" && \
     pip install --default-timeout=300 --no-cache-dir \
         torch --index-url https://download.pytorch.org/whl/cpu
 
